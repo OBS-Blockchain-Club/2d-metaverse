@@ -1,8 +1,7 @@
 import { Component } from 'react';
-import './App.css';
-import Landing from './Components/Landing';
 
-class App extends Component{
+
+class Landing extends Component{
 
   async componentDidMount () {
 
@@ -12,11 +11,11 @@ class App extends Component{
 
     return (
       <div className="App">
-        <Landing/>
+
       </div>
     );
   }
 
 }
 
-export default App;
+export default Landing;

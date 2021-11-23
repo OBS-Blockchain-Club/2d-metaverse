@@ -62,6 +62,10 @@
  .character[walking="true"] .character_spritesheet {
     animation: walkAnimation 0.6s steps(4) infinite; 
  }
+
+ .shot {
+   transition: transform 2s;
+ }
  
  @keyframes walkAnimation {
     from {
