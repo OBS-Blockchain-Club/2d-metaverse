@@ -2,6 +2,7 @@
 import { Component } from 'react';
 import './game.css';
 import ReactDOM from 'react-dom';
+import socketClient from "socket.io-client";
 
 class Game extends Component{
 
@@ -9,11 +10,12 @@ class Game extends Component{
     super()
     this.state={
       speed: 2,
+      shotCount: 0,
     }
 
     this.character = null;
     this.map = null;
-
+    this.socket = socketClient('wss://pixel-art.kesarx.repl.co');
     this.placeCharacter = this.placeCharacter.bind(this)
     this.gameLoop = this.gameLoop.bind(this)
     this.shootFromCoords = this.shootFromCoords.bind(this)
@@ -47,6 +49,9 @@ class Game extends Component{
         this.current_directions.unshift(dir)
       }
    })
+    this.socket.addEventListener('open', function(event) {
+      console.log('connected to ws')
+    })
    
     document.addEventListener("keyup", (e) => {
       var dir = this.keys[e.which];
@@ -102,19 +107,20 @@ class Game extends Component{
   }
 
   shootFromCoords(x, y, toX, toY) {
-    console.log(x)
-    console.log(y)
     const angle = Math.atan2(toY - y, toX - x);
+    const arrowId = 'arrow' + this.state.shotCount
     const shot = (
-      <div id='arrow' className='shot' style={{top: y+7, left: x+30, position: 'absolute'}}>
+      <div id={arrowId} className='shot' style={{top: y+7, left: x+30, position: 'absolute'}}>
         <img src='shot.png' alt='fireball'/>
       </div>
     )
     ReactDOM.render(shot, document.getElementById('playershot'))
     setTimeout(() => {
-      var arrow = document.getElementById('arrow')
+      var arrow = document.getElementById(arrowId)
       arrow.style.transform = `translate3d(${toX}px,${toY}px, 0)`
     }, 200)
+    this.setState({shotCount: this.state.shotCount + 1})
+    ReactDOM.unmountComponentAtNode(document.getElementById(arrowId))
   }
 
   render() {
