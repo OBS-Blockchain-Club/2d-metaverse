@@ -58,7 +58,6 @@ class Game extends Component{
     })
     this.socket.on('newPlayer', (msg) => {
       if(msg.address !== this.state.account) {
-        console.log(msg)
         console.log( msg.address + ' joined.')
       }
     })
@@ -112,15 +111,6 @@ class Game extends Component{
     }
     this.character.setAttribute("walking", held_direction ? "true" : "false");
     
-    //Limits (gives the illusion of walls)
-    var leftLimit = -8;
-    var rightLimit = (16 * 11)+8;
-    var topLimit = -8 + 32;
-    var bottomLimit = (16 * 7);
-    if (this.x < leftLimit) { this.x = leftLimit; }
-    if (this.x > rightLimit) { this.x = rightLimit; }
-    if (this.y < topLimit) { this.y = topLimit; }
-    if (this.y > bottomLimit) { this.y = bottomLimit; }
     
     var camera_left = pixelSize * window.innerWidth/4;
     var camera_top = pixelSize * window.innerHeight/4.2;
@@ -133,7 +123,19 @@ class Game extends Component{
     this.placeCharacter();
     window.requestAnimationFrame(() => {
       this.gameLoop()
+      this.emitMovement(this.current_directions)
     })
+  }
+
+  emitMovement (directions) {
+    if(directions.length !== 0) {
+      const playerData = {
+        address: this.state.account,
+        x: this.x,
+        y: this.y
+      }
+      this.socket.emit('move', playerData)
+    }
   }
 
   shootFromCoords(x, y, toX, toY) {

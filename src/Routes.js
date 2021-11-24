@@ -1,10 +1,9 @@
-import { BrowserRouter, Route, Switch} from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import { Landing } from "./Components/Landing";
 import { Whitepaper } from "./Components/Whitepaper";
 
-export function Routes() {
+export function Pages() {
     return(
-        <BrowserRouter>
             <Switch>
                 <Route exact path="/">
                     <Landing/>
@@ -13,6 +12,5 @@ export function Routes() {
                     <Whitepaper/>
                 </Route>
             </Switch>
-        </BrowserRouter>
     )
 }

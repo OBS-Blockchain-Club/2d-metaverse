@@ -1,14 +1,9 @@
 import { Component } from 'react';
 import './App.css';
-<<<<<<< Updated upstream
-import Landing from './Components/Landing';
-import Game from './Components/Game';
-=======
-import { Routes } from './Routes';
+import { Pages } from './Routes';
 import { BrowserRouter as Router } from "react-router-dom";
 import {Landing} from './Components/Landing';
 
->>>>>>> Stashed changes
 class App extends Component{
 
   async componentDidMount () {
@@ -19,14 +14,9 @@ class App extends Component{
 
     return (
       <div className="App">
-<<<<<<< Updated upstream
-        {/* <Landing/> */}
-        <Game/>
-=======
         <Router>
-          <Routes/>
+          <Pages/>
         </Router>
->>>>>>> Stashed changes
       </div>
     );
   }
