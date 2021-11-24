@@ -2,6 +2,7 @@
 import { Component } from 'react';
 import './game.css';
 import ReactDOM from 'react-dom';
+import Web3 from 'web3';
 import socketClient from "socket.io-client";
 
 class Game extends Component{
@@ -11,6 +12,8 @@ class Game extends Component{
     this.state={
       speed: 2,
       shotCount: 0,
+      account: null,
+      web3: new Web3(window.ethereum),
     }
 
     this.character = null;
@@ -39,7 +42,8 @@ class Game extends Component{
    }
   }
 
-  async componentDidMount (){
+  async componentDidMount () {
+    this.connectWeb3()
     this.character = document.querySelector(".character");
     this.map = document.querySelector(".map");
     this.gameLoop()
@@ -48,9 +52,14 @@ class Game extends Component{
       if (dir && this.current_directions.indexOf(dir) === -1) {
         this.current_directions.unshift(dir)
       }
-   })
-    this.socket.addEventListener('open', function(event) {
-      console.log('connected to ws')
+    })
+    this.socket.on('move', (msg) => {
+      console.log(msg)
+    })
+    this.socket.on('newPlayer', (msg) => {
+      if(msg.address !== this.state.account) {
+        console.log(msg)
+      }
     })
    
     document.addEventListener("keyup", (e) => {
@@ -61,11 +70,26 @@ class Game extends Component{
       }
     });
 
-    document.addEventListener("mousedown", (e) => {
-      this.shootFromCoords(window.innerWidth/2, window.innerHeight/2, e.clientX/4, e.clientY/4.2)
-    });
+    // document.addEventListener("mousedown", (e) => {
+    //   this.shootFromCoords(window.innerWidth/2, window.innerHeight/2, e.clientX/4, e.clientY/4.2)
+    // });
   }
   
+  async connectWeb3(){
+    if (window.ethereum) { 
+      try { 
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' }); 
+        this.setState({ account: accounts[0]}, () => {
+          this.socket.emit('verify', this.state.account)
+        })
+        }catch (error) { 
+          if (error.code === 4001) 
+        { // User rejected request } 
+          console.log(error) } 
+        }
+    }
+  }
+
   placeCharacter () {
    
     var pixelSize = parseInt(
@@ -126,7 +150,7 @@ class Game extends Component{
   render() {
     return (
         <div className="App">
-            <div className="camera" style={{height: '100vh', width: '100vw'}} onClick={(e) => {console.log(e.clientX)}}>
+            <div className="camera" style={{height: '100vh', width: '100vw'}}>
                 <div className="map pixel-art">
                     <div className="character" facing="down" walking="true">
                         <div className="shadow pixel-art"></div>
