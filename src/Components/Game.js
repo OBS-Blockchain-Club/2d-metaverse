@@ -14,6 +14,9 @@ class Game extends Component{
       shotCount: 0,
       account: null,
       web3: new Web3(window.ethereum),
+      pixelSize: parseInt(
+        getComputedStyle(document.documentElement).getPropertyValue('--pixel-size')
+      ),
     }
 
     this.character = null;
@@ -22,7 +25,7 @@ class Game extends Component{
     this.placeCharacter = this.placeCharacter.bind(this)
     this.gameLoop = this.gameLoop.bind(this)
     this.shootFromCoords = this.shootFromCoords.bind(this)
-
+    this.players = [];
     this.x = 0
     this.y = 0
 
@@ -54,11 +57,13 @@ class Game extends Component{
       }
     })
     this.socket.on('move', (msg) => {
-      console.log(msg)
+      if(this.state.account !== msg.address) {
+        this.players[msg.address] = msg
+      }
     })
     this.socket.on('newPlayer', (msg) => {
       if(msg.address !== this.state.account) {
-        console.log( msg.address + ' joined.')
+        this.players[msg.address] = msg;
       }
     })
     this.socket.on('removePlayer', (msg) => {
@@ -97,9 +102,6 @@ class Game extends Component{
 
   placeCharacter () {
    
-    var pixelSize = parseInt(
-       getComputedStyle(document.documentElement).getPropertyValue('--pixel-size')
-    );
 
     const held_direction = this.current_directions[0];
     if (held_direction) {
@@ -112,11 +114,11 @@ class Game extends Component{
     this.character.setAttribute("walking", held_direction ? "true" : "false");
     
     
-    var camera_left = pixelSize * window.innerWidth/4;
-    var camera_top = pixelSize * window.innerHeight/4.2;
+    var camera_left = this.state.pixelSize * window.innerWidth/4;
+    var camera_top = this.state.pixelSize * window.innerHeight/4.2;
     
-    this.map.style.transform = `translate3d( ${-this.x*pixelSize+camera_left}px, ${-this.y*pixelSize+camera_top}px, 0 )`;
-    this.character.style.transform = `translate3d( ${this.x*pixelSize}px, ${this.y*pixelSize}px, 0 )`;  
+    this.map.style.transform = `translate3d( ${-this.x*this.state.pixelSize+camera_left}px, ${-this.y*this.state.pixelSize+camera_top}px, 0 )`;
+    this.character.style.transform = `translate3d( ${this.x*this.state.pixelSize}px, ${this.y*this.state.pixelSize}px, 0 )`;  
   }
  
   gameLoop() {
@@ -124,7 +126,23 @@ class Game extends Component{
     window.requestAnimationFrame(() => {
       this.gameLoop()
       this.emitMovement(this.current_directions)
+      this.renderOtherPlayers()
     })
+  }
+
+  renderOtherPlayers() {
+
+    const otherPlayers = (
+      <div>
+          {Object.keys(this.players).map((address, info) => (
+            <div key={address} id={address} className="character" facing="down" walking="false" style={{transform: `translate3d( ${this.players[address].x * this.state.pixelSize}px, ${this.players[address].y * this.state.pixelSize}px, 0)`}}>
+              <div className="shadow pixel-art"></div>
+              <div className="character_spritesheet pixel-art"></div>
+            </div>
+          ))}
+      </div>
+    )
+    ReactDOM.render(otherPlayers, document.getElementById('otherPlayers'))
   }
 
   emitMovement (directions) {
@@ -139,7 +157,6 @@ class Game extends Component{
   }
 
   shootFromCoords(x, y, toX, toY) {
-    const angle = Math.atan2(toY - y, toX - x);
     const arrowId = 'arrow' + this.state.shotCount
     const shot = (
       <div id={arrowId} className='shot' style={{top: y+7, left: x+30, position: 'absolute'}}>
@@ -162,6 +179,7 @@ class Game extends Component{
         <div className="App">
             <div className="camera" style={{height: '100vh', width: '100vw'}}>
                 <div className="map pixel-art">
+                    <div id='otherPlayers'></div>
                     <div className="character" facing="down" walking="true">
                         <div className="shadow pixel-art"></div>
                         <div className="character_spritesheet pixel-art"></div>
