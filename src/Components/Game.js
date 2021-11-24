@@ -59,6 +59,12 @@ class Game extends Component{
     this.socket.on('newPlayer', (msg) => {
       if(msg.address !== this.state.account) {
         console.log(msg)
+        console.log( msg.address + ' joined.')
+      }
+    })
+    this.socket.on('removePlayer', (msg) => {
+      if(msg.address !== this.state.account) {
+        console.log( msg.address + ' left.')
       }
     })
    
@@ -148,6 +154,8 @@ class Game extends Component{
   }
 
   render() {
+    const account = this.state.account
+    const shortenedAcc = this.state.account ? account.substring(0, 6) + '...' + account.substring(account.length-5, account.length) : ''
     return (
         <div className="App">
             <div className="camera" style={{height: '100vh', width: '100vw'}}>
@@ -159,6 +167,7 @@ class Game extends Component{
                 </div>
                 <div id='playershot'></div>
             </div>
+            <div style={{position: 'absolute', top: 0, right: 0, fontSize: '1.4rem', border: '4px solid black', padding: '2px 15px', backgroundColor: 'gray', fontFamily: 'Press Start 2P', fontWeight: 'bolder'}}>{shortenedAcc}</div>
         </div>
     );
   }
