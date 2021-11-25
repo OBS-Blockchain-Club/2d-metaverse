@@ -9,8 +9,6 @@
 
 
 .camera {
-    width: calc(var(--pixel-size) * --windowWidth);
-    height: calc(var(--pixel-size) * --windowHeight);
     overflow: hidden;
     background: #61ddf7;
     position:relative;
