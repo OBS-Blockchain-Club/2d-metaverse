@@ -36,6 +36,7 @@ export class Landing extends Component{
     var TopLeft = this.getElementTopLeft("block");
     document.getElementById("block").style.left = `${TopLeft.left-10}px`
     document.getElementById("block").style.top = `${TopLeft.top-10}px`
+    window.location.href = '/game'
   }
 
   holdin (){
@@ -58,7 +59,7 @@ export class Landing extends Component{
               </div>
             </div>
             <div className="flex items-center justify-center">
-              <img id="block" src="playbutt.png" className="pt-96" style={{position:"absolute"}} onMouseDown={() => {this.holdin()}} onClick={() => {console.log("playing"); this.playclick()}}/>
+              <img id="block" src="playbutt.png" className="pt-96" style={{position:"absolute"}} onMouseDown={() => {this.holdin()}} onClick={() => {this.playclick()}}/>
             </div>
         </div>
         <div>
