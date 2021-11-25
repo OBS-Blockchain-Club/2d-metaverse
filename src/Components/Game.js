@@ -28,7 +28,7 @@ class Game extends Component{
     this.players = [];
     this.x = 0
     this.y = 0
-
+    this.chat = {};
     this.current_directions = [];
         
     this.directions = {
@@ -60,6 +60,7 @@ class Game extends Component{
       console.log(msg)
         Object.keys(msg).map((address, info) => {
           console.log(msg[address].x)
+          this.players[msg.address] = msg
         })
     })
     this.socket.on('move', (msg) => {
@@ -75,6 +76,7 @@ class Game extends Component{
     this.socket.on('removePlayer', (msg) => {
       if(msg.address !== this.state.account) {
         console.log( msg.address + ' left.')
+        delete this.players[msg.address]
       }
     })
    
@@ -107,8 +109,6 @@ class Game extends Component{
   }
 
   placeCharacter () {
-   
-
     const held_direction = this.current_directions[0];
     if (held_direction) {
        if (held_direction === this.directions.right) {this.x += this.state.speed;}
@@ -132,13 +132,11 @@ class Game extends Component{
       this.gameLoop()
       this.emitMovement(this.current_directions)
       this.renderOtherPlayers()
-      console.log(this.character.getAttribute('walking'))
     })
   }
 
   renderOtherPlayers() {
 
-    console.log(this.players)
     // console.log(this.players['0x7E764eF3Ca3a1f2ed4e4Ce6Ad162021148B09460'].x)
     const otherPlayers = (
       <div>
