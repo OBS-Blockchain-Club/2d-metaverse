@@ -56,6 +56,12 @@ class Game extends Component{
         this.current_directions.unshift(dir)
       }
     })
+    this.socket.on('getPlayers', (msg) => {
+      console.log(msg)
+        Object.keys(msg).map((address, info) => {
+          console.log(msg[address].x)
+        })
+    })
     this.socket.on('move', (msg) => {
       if(this.state.account !== msg.address) {
         this.players[msg.address] = msg
@@ -113,7 +119,6 @@ class Game extends Component{
     }
     this.character.setAttribute("walking", held_direction ? "true" : "false");
     
-    
     var camera_left = this.state.pixelSize * window.innerWidth/4;
     var camera_top = this.state.pixelSize * window.innerHeight/4.2;
     
@@ -127,15 +132,18 @@ class Game extends Component{
       this.gameLoop()
       this.emitMovement(this.current_directions)
       this.renderOtherPlayers()
+      console.log(this.character.getAttribute('walking'))
     })
   }
 
   renderOtherPlayers() {
 
+    console.log(this.players)
+    // console.log(this.players['0x7E764eF3Ca3a1f2ed4e4Ce6Ad162021148B09460'].x)
     const otherPlayers = (
       <div>
           {Object.keys(this.players).map((address, info) => (
-            <div key={address} id={address} className="character" facing="down" walking="false" style={{transform: `translate3d( ${this.players[address].x * this.state.pixelSize}px, ${this.players[address].y * this.state.pixelSize}px, 0)`}}>
+            <div key={address} id={address} className="character" facing={this.players[address].facing} walking={this.players[address].walking} style={{transform: `translate3d( ${this.players[address].x * this.state.pixelSize}px, ${this.players[address].y * this.state.pixelSize}px, 0)`}}>
               <div className="shadow pixel-art"></div>
               <div className="character_spritesheet pixel-art"></div>
             </div>
@@ -150,7 +158,9 @@ class Game extends Component{
       const playerData = {
         address: this.state.account,
         x: this.x,
-        y: this.y
+        y: this.y,
+        facing: this.character.getAttribute("facing"),
+        walking: this.character.getAttribute("walking"),
       }
       this.socket.emit('move', playerData)
     }
@@ -180,7 +190,7 @@ class Game extends Component{
             <div className="camera" style={{height: '100vh', width: '100vw'}}>
                 <div className="map pixel-art">
                     <div id='otherPlayers'></div>
-                    <div className="character" facing="down" walking="true">
+                    <div className="character" facing="down" walking="false">
                         <div className="shadow pixel-art"></div>
                         <div className="character_spritesheet pixel-art"></div>
                     </div>
