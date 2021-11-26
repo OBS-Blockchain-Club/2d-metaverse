@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 
 export class Landing extends Component{
@@ -16,61 +17,46 @@ export class Landing extends Component{
 
   }
 
-  getElementTopLeft(id) {
 
-    var ele = document.getElementById(id);
-    var top = 0;
-    var left = 0;
-   
-    while(ele.tagName != "BODY") {
-        top += ele.offsetTop;
-        left += ele.offsetLeft;
-        ele = ele.offsetParent;
-    }
-   
-    return { top: top, left: left };
-   
-}
 
   async playclick(){
-    var TopLeft = this.getElementTopLeft("block");
-    document.getElementById("block").style.left = `${TopLeft.left-10}px`
-    document.getElementById("block").style.top = `${TopLeft.top-10}px`
+    document.getElementById("block").className = "flex items-center justify-center transform -translate-y-3.5 -translate-x-3.5"
     window.location.href = '/game'
   }
 
   holdin (){
-  var TopLeft = this.getElementTopLeft("block");
-  document.getElementById("block").style.left = `${TopLeft.left+10}px`
-  document.getElementById("block").style.top = `${TopLeft.top+10}px`
+  document.getElementById("block").className = "flex items-center justify-center transform translate-y-3.5 translate-x-3.5"
 }
 
   render () {
 
     return (
       <div>
-        <div className="bg-white h-screen">
+        <div className="fixed w-screen h-10">
+            <div className="select-none pt-20 text-right transform -translate-y-20 -translate-x-2">            
+              <Link to="/Whitepaper" className="" style={{fontFamily:"Broken Console"}}>Whitepaper</Link> 
+            </div>
+        </div>
+        <div className="bg-white h-screen grid grid-col-6 gap-4 k">
+          <div className="col-start-1 col-span-4">
+            <div className=" flex justify-center items-center ">
+              <div className="text-purple-800 pt-8" style={{fontFamily:"Broken Console",filter: "drop-shadow(5px 5px 0 #000000)", fontSize:"5.5rem"}}>
+                PIXEL NFT
+              </div>
+            </div>
             <div className="">
-              <div className=" flex justify-center items-center">
-                <img src='Title.png' className="transform scale-150 pt-5" />
-              </div>
-              <div className="pl-96">
-                <img src="coin.gif"className="transform scale-150 pb-44" style={{paddingLeft:"33rem"}}/>
-              </div>
+              <img src="coin.gif"className=" select-none transform scale-150 pb-44 translate-x-2 -translate-y-14" style={{paddingLeft:"52rem", userSelect:"none"}}/>
             </div>
-            <div className="flex items-center justify-center">
-              <img id="block" src="playbutt.png" className="pt-96" style={{position:"absolute"}} onMouseDown={() => {this.holdin()}} onClick={() => {this.playclick()}}/>
+          </div>
+          <div className="col-start-1 col-span-4 ">
+
+          </div>
+          <div className="col-start-1 col-span-4  ">
+            <div className="select-none flex items-center justify-center pt-20">
+              <input className="rounded-3xl" type="image" id="block" src="/playbutt.png" onMouseDown={() => {this.holdin()}} onClick={() => {console.log("playing"); this.playclick()}} />
             </div>
-        </div>
-        <div>
-            <div className="grid grid-cols-2 gap-4 h-screen">
-              <div className="py-60">
-              </div>
-              <div className="py-60">
-                <p>some cool image</p>
-              </div>
-            </div>
-        </div>
+          </div>
+          </div>
       </div>
     );
   }
