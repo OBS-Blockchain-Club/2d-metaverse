@@ -24,12 +24,14 @@ class Game extends Component{
     this.socket = socketClient('wss://pixel-art.kesarx.repl.co');
     this.placeCharacter = this.placeCharacter.bind(this)
     this.gameLoop = this.gameLoop.bind(this)
+    this.sendMessage = this.sendMessage.bind(this)
     this.shootFromCoords = this.shootFromCoords.bind(this)
     this.players = [];
     this.x = 0
     this.y = 0
     this.chat = {};
     this.current_directions = [];
+    this.messages = []
         
     this.directions = {
       up: "up",
@@ -78,6 +80,20 @@ class Game extends Component{
         console.log( msg.address + ' left.')
         delete this.players[msg.address]
       }
+    })
+    this.socket.on('newMessage', (msg) => {
+      this.messages.push(msg)
+      const chat = (
+        <div>
+          {this.messages.map((msg, index) => (
+              <div key={index} id={index} className='text-left text-sm' style={{ overflow: 'y-scroll', maxHeight: '40%'}}>
+                <p className='inline-block'>{msg.address.substring(0, 7)}</p>
+                <p className='inline-block pl-2'>{msg.message}</p>
+              </div>
+          ))}
+        </div>
+      )
+      ReactDOM.render(chat, document.getElementById('chat'))
     })
    
     document.addEventListener("keyup", (e) => {
@@ -180,22 +196,41 @@ class Game extends Component{
     ReactDOM.unmountComponentAtNode(document.getElementById(arrowId))
   }
 
+  sendMessage(msg) {
+    const data = {
+      address: this.state.account,
+      message: msg
+    }
+    this.socket.emit('message', data)
+  }
+
   render() {
     const account = this.state.account
     const shortenedAcc = this.state.account ? account.substring(0, 6) + '...' + account.substring(account.length-5, account.length) : ''
+
+    console.log(this.messages)
     return (
         <div className="App">
             <div className="camera" style={{height: '100vh', width: '100vw'}}>
-                <div className="map pixel-art">
+                <div className="map pixel-art" id='map'>
                     <div id='otherPlayers'></div>
                     <div className="character" facing="down" walking="false">
                         <div className="shadow pixel-art"></div>
                         <div className="character_spritesheet pixel-art"></div>
+                        
                     </div>
                 </div>
                 <div id='playershot'></div>
             </div>
             <div style={{position: 'absolute', top: 0, right: 0, fontSize: '1.4rem', border: '4px solid black', padding: '2px 15px', backgroundColor: 'gray', fontFamily: 'Press Start 2P', fontWeight: 'bolder'}}>{shortenedAcc}</div>
+            <div style={{position: 'absolute', bottom: 0, left: 0, fontSize: '1.4rem', padding: '5px 5px', opacity: 0.7, width: '15%'}}>
+              <div>
+                <div id='chat'></div>
+                <div>
+                    <input id='input' autoComplete='off' placeholder='Type your message here...' className='w-full' style={{backgroundColor: 'rgba(255, 255, 255, 0.6)', borderRadius: '0.2rem', padding: '0.4rem 0.2rem'}} onKeyDown={(e) => {if(e.key==='Enter'){this.sendMessage(e.target.value); document.getElementById('input').value = '' }}}/>
+                </div>
+              </div>
+            </div>
         </div>
     );
   }
