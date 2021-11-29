@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import { Link } from 'react-router-dom';
 import '../App.css';
+import { Navbar } from './Navbar';
 
 
 export class Landing extends Component{
@@ -30,15 +31,6 @@ export class Landing extends Component{
     return (
                 //The color for the navbar is only temporary, change it according to what u want
       <div>
-
-          <div className="fixed w-screen bg-blue-200">
-            <div className="text-right">
-              <Link to="/Whitepaper" className="pr-1 hover:underline" style={{fontFamily:"Broken Console", fontSize:"20px", textDecorationColor:"#4C1D95"}}>Whitepaper</Link>
-            </div>
-          </div>
-          <div className="fixed text-purple-800" style={{fontFamily:"Broken Console",filter: "drop-shadow(2px 2px 0 #000000)", fontSize:"25px"}}>
-            <Link to="/">PIXEL NFT</Link>
-          </div>
 
         <div className="bg-white h-screen grid grid-col-6 gap-4">
           <div className="col-start-1 col-span-4">
