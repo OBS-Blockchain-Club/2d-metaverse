@@ -13,12 +13,6 @@ export class Landing extends Component{
 
   delay = ms => new Promise(res => setTimeout(res, ms))
 
-  async componentDidMount () {
-
-  }
-
-
-
   async playclick(){
     document.getElementById("block").className = "flex items-center justify-center transform -translate-y-3.5 -translate-x-3.5"
     window.location.href = '/game'

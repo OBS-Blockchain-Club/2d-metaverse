@@ -40,4 +40,8 @@
 @font-face {
   font-family: 'Broken Console';
   src: url('Broken\ Console\ Bold.ttf') format('truetype'); 
-}  
+}
+
+.font-pixelated {
+  font-family: 'Broken Console';
+}

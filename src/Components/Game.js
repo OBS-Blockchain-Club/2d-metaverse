@@ -17,6 +17,8 @@ class Game extends Component{
       pixelSize: parseInt(
         getComputedStyle(document.documentElement).getPropertyValue('--pixel-size')
       ),
+      x: 0,
+      y: 1,
     }
 
     this.character = null;
@@ -27,8 +29,7 @@ class Game extends Component{
     this.sendMessage = this.sendMessage.bind(this)
     this.shootFromCoords = this.shootFromCoords.bind(this)
     this.players = [];
-    this.x = 0
-    this.y = 0
+    this.health = 58;
     this.chat = {};
     this.current_directions = [];
     this.messages = []
@@ -72,6 +73,7 @@ class Game extends Component{
     })
     this.socket.on('newPlayer', (msg) => {
       if(msg.address !== this.state.account) {
+        console.log( msg.address + ' joined.')
         this.players[msg.address] = msg;
       }
     })
@@ -86,7 +88,7 @@ class Game extends Component{
       const chat = (
         <div>
           {this.messages.map((msg, index) => (
-              <div key={index} id={index} className='text-left text-sm' style={{ overflow: 'y-scroll', maxHeight: '40%'}}>
+              <div key={index} id={index} className='text-left text-sm font-pixelated' style={{ overflow: 'y-scroll', maxHeight: '40%'}}>
                 <p className='inline-block'>{msg.address.substring(0, 7)}</p>
                 <p className='inline-block pl-2'>{msg.message}</p>
               </div>
@@ -124,13 +126,14 @@ class Game extends Component{
     }
   }
 
+
   placeCharacter () {
     const held_direction = this.current_directions[0];
     if (held_direction) {
-       if (held_direction === this.directions.right) {this.x += this.state.speed;}
-       if (held_direction === this.directions.left) {this.x -= this.state.speed;}
-       if (held_direction === this.directions.down) {this.y += this.state.speed;}
-       if (held_direction === this.directions.up) {this.y -= this.state.speed;}
+       if (held_direction === this.directions.right) {this.setState({x: this.state.x + this.state.speed});}
+       if (held_direction === this.directions.left) {this.setState({x: this.state.x - this.state.speed});}
+       if (held_direction === this.directions.down) {this.setState({y: this.state.y + this.state.speed});}
+       if (held_direction === this.directions.up) {this.setState({y: this.state.y - this.state.speed});;}
        this.character.setAttribute("facing", held_direction);
     }
     this.character.setAttribute("walking", held_direction ? "true" : "false");
@@ -138,8 +141,8 @@ class Game extends Component{
     var camera_left = this.state.pixelSize * window.innerWidth/4;
     var camera_top = this.state.pixelSize * window.innerHeight/4.2;
     
-    this.map.style.transform = `translate3d( ${-this.x*this.state.pixelSize+camera_left}px, ${-this.y*this.state.pixelSize+camera_top}px, 0 )`;
-    this.character.style.transform = `translate3d( ${this.x*this.state.pixelSize}px, ${this.y*this.state.pixelSize}px, 0 )`;  
+    this.map.style.transform = `translate3d( ${-this.state.x*this.state.pixelSize+camera_left}px, ${-this.state.y*this.state.pixelSize+camera_top}px, 0 )`;
+    this.character.style.transform = `translate3d( ${this.state.x*this.state.pixelSize}px, ${this.state.y*this.state.pixelSize}px, 0 )`;  
   }
  
   gameLoop() {
@@ -153,7 +156,6 @@ class Game extends Component{
 
   renderOtherPlayers() {
 
-    // console.log(this.players['0x7E764eF3Ca3a1f2ed4e4Ce6Ad162021148B09460'].x)
     const otherPlayers = (
       <div>
           {Object.keys(this.players).map((address, info) => (
@@ -171,8 +173,8 @@ class Game extends Component{
     if(directions.length !== 0) {
       const playerData = {
         address: this.state.account,
-        x: this.x,
-        y: this.y,
+        x: this.state.x,
+        y: this.state.y,
         facing: this.character.getAttribute("facing"),
         walking: this.character.getAttribute("walking"),
       }
@@ -208,7 +210,12 @@ class Game extends Component{
     const account = this.state.account
     const shortenedAcc = this.state.account ? account.substring(0, 6) + '...' + account.substring(account.length-5, account.length) : ''
 
-    console.log(this.messages)
+    let color = 'green'
+    if(this.health <= 20) {
+      color = 'red'
+    } else if(this.health <= 60) {
+      color = 'yellow'
+    }
     return (
         <div className="App">
             <div className="camera" style={{height: '100vh', width: '100vw'}}>
@@ -217,17 +224,26 @@ class Game extends Component{
                     <div className="character" facing="down" walking="false">
                         <div className="shadow pixel-art"></div>
                         <div className="character_spritesheet pixel-art"></div>
-                        
+                        <div className={`bg-${color}-500 h-3 text-center text-sm leading-4`} style={{position: 'relative', width: `${this.health}%`}}>
+                          <p className='text-center font-pixelated text-xs'>
+                            {this.health}
+                          </p>
+                        </div>
                     </div>
+                    
                 </div>
                 <div id='playershot'></div>
             </div>
-            <div style={{position: 'absolute', top: 0, right: 0, fontSize: '1.4rem', border: '4px solid black', padding: '2px 15px', backgroundColor: 'gray', fontFamily: 'Press Start 2P', fontWeight: 'bolder'}}>{shortenedAcc}</div>
+            <div id='stats' className='text-right' style={{position: 'absolute', top: 0, right: 0, padding: '0.4rem 0.5rem', fontSize: '1rem', color: 'rgba(20, 20, 20, 0.6)', fontSize: '1.2rem'}}>
+              <div className='font-pixelated inline-block px-5'><p className={`text-${color}-600 inline-block`}>{this.health}</p>$LIFE</div>
+              <div className='font-pixelated inline-block'>{shortenedAcc}</div>
+              <br/><div className='inline-block' id='coords'><div className='font-pixelated'>X: {this.state.x}  Y: {-this.state.y} </div></div>
+            </div>
             <div style={{position: 'absolute', bottom: 0, left: 0, fontSize: '1.4rem', padding: '5px 5px', opacity: 0.7, width: '15%'}}>
               <div>
                 <div id='chat'></div>
                 <div>
-                    <input id='input' autoComplete='off' placeholder='Type your message here...' className='w-full' style={{backgroundColor: 'rgba(255, 255, 255, 0.6)', borderRadius: '0.2rem', padding: '0.4rem 0.2rem'}} onKeyDown={(e) => {if(e.key==='Enter'){this.sendMessage(e.target.value); document.getElementById('input').value = '' }}}/>
+                    <input id='input' autoComplete='off' placeholder='Type your message here...' className='w-full focus:outline-none font-pixelated' style={{backgroundColor: 'rgba(255, 255, 255, 0.6)', borderRadius: '0.2rem', padding: '0.4rem 0.2rem', fontSize: '1rem'}} onKeyDown={(e) => {if(e.key==='Enter'){this.sendMessage(e.target.value); document.getElementById('input').value = '' }}}/>
                 </div>
               </div>
             </div>
