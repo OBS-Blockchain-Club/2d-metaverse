@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import { Link } from 'react-router-dom';
-
+import '../App.css';
 
 export class Landing extends Component{
 
@@ -33,8 +33,8 @@ export class Landing extends Component{
     return (
       <div>
         <div className="fixed w-screen h-10">
-            <div className="select-none pt-20 text-right transform -translate-y-20 -translate-x-2">            
-              <Link to="/Whitepaper" className="" style={{fontFamily:"Broken Console"}}>Whitepaper</Link> 
+            <div className="select-none pt-20 text-right transform -translate-y-20 bg-yellow-900">            
+              <Link to="/Whitepaper" className="" style={{fontFamily:"Broken Console", fontSize:"20px"}}>Whitepaper</Link> 
             </div>
         </div>
         <div className="bg-white h-screen grid grid-col-6 gap-4 k">
