@@ -16,6 +16,10 @@ export function Pages() {
                     <Navbar/>
                     <Mint/>
                 </Route>
+                <Route exact path="/map">
+                    <Navbar/>
+                    
+                </Route>
                 <Route path="/whitepaper">
                     <Navbar/>
                     <Whitepaper/>

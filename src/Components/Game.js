@@ -220,6 +220,10 @@ class Game extends Component{
         <div className="App">
             <div className="camera" style={{height: '100vh', width: '100vw'}}>
                 <div className="map pixel-art" id='map'>
+                    {/* <div id='monster' className="character" facing='down' walking="false" style={{transform: `translate3d( ${this.players[address].x * this.state.pixelSize}px, ${this.players[address].y * this.state.pixelSize}px, 0)`}}>
+                      <div className="shadow pixel-art"></div>
+                      <div className="character_spritesheet pixel-art"></div>
+                    </div> */}
                     <div id='otherPlayers'></div>
                     <div className="character" facing="down" walking="false">
                         <div className="shadow pixel-art"></div>

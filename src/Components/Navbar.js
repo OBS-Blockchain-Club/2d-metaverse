@@ -3,10 +3,24 @@ import { Link } from 'react-router-dom';
 import '../App.css';
 
 
-export class Navbar extends Component{
+export function Navbar (){
 
-  render () {
     const navLinkCSS = `px-5 pb-2 inline-block align-middle hover:border-opacity-100 border-b-2 border-gray-600 border-opacity-0`
+    const onPageCSS = `px-5 pb-2 inline-block align-middle border-opacity-100 border-b-2 border-gray-600 border-opacity-0`
+
+    const tabs = {
+      mint: navLinkCSS, 
+      map: navLinkCSS, 
+      game: navLinkCSS, 
+      whitepaper: navLinkCSS
+    }
+
+    Object.keys(tabs).map((path) => {
+      if(window.location.pathname.replace('/', '') == path) {
+        tabs[path] = onPageCSS
+      }
+    })
+
     return (
                 //The color for the navbar is only temporary, change it according to what u want
       <div>
@@ -16,15 +30,13 @@ export class Navbar extends Component{
               <div className="inline-block px-2 text-purple-800 align-bottom" style={{fontFamily:"Broken Console",filter: "drop-shadow(2px 2px 0 #000000)", fontSize:"2rem"}}>
                 <Link to="/">PIXEL NFT</Link>
               </div>
-              <Link to="/mint" className={navLinkCSS} style={{fontFamily:"Broken Console", fontSize:"0.9rem"}}>Mint</Link>
-              <Link to="/map" className={navLinkCSS} style={{fontFamily:"Broken Console", fontSize:"0.9rem"}}>Map</Link>
-              <Link to="/game" className={navLinkCSS} style={{fontFamily:"Broken Console", fontSize:"0.9rem"}}>game</Link>
-              <Link to="/whitepaper" className={navLinkCSS} style={{fontFamily:"Broken Console", fontSize:"0.9rem"}}>whitepaper</Link>
+              {Object.keys(tabs).map((path, css) => (
+                <Link key={path} to={`/${path}`} className={tabs[path]} style={{fontFamily:"Broken Console", fontSize:"0.9rem"}}>{path}</Link>
+              ))}
             </div>
           </div>
       </div>
     );
-  }
 
 }
 
