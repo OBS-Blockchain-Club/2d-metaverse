@@ -19,6 +19,8 @@ class Game extends Component{
       ),
       x: 0,
       y: 1,
+      monsterX: Math.random() *200,
+      monsterY: Math.random() *200
     }
 
     this.character = null;
@@ -151,6 +153,7 @@ class Game extends Component{
       this.gameLoop()
       this.emitMovement(this.current_directions)
       this.renderOtherPlayers()
+      console.log((this.state.x - this.state.monsterX) + ' ' + (this.state.y - this.state.monsterY))
     })
   }
 
@@ -238,10 +241,10 @@ class Game extends Component{
                 </div>
                 <div id='playershot'></div>
             </div>
-            <div id='stats' className='text-right' style={{position: 'absolute', top: 0, right: 0, padding: '0.4rem 0.5rem', fontSize: '1rem', color: 'rgba(20, 20, 20, 0.6)', fontSize: '1.2rem'}}>
-              <div className='font-pixelated inline-block px-5'><p className={`text-${color}-600 inline-block`}>{this.health}</p>$LIFE</div>
-              <div className='font-pixelated inline-block'>{shortenedAcc}</div>
-              <br/><div className='inline-block' id='coords'><div className='font-pixelated'>X: {this.state.x}  Y: {-this.state.y} </div></div>
+            <div id='stats' className='text-right bg-gray-200 bg-opacity-50 rounded-md' style={{position: 'absolute', top: 0, right: 0, padding: '0.4rem 0.5rem', fontSize: '1rem', color: 'rgba(20, 20, 20, 0.6)', fontSize: '1.2rem'}}>
+              <div className='font-pixelated inline-block px-5 text-black'><p className={`text-${color}-600 inline-block`}>{this.health}</p>$LIFE</div>
+              <div className='font-pixelated inline-block text-black '>{shortenedAcc}</div>
+              <br/><div className='inline-block text-black' id='coords'><div className='font-pixelated'><p className='px-10 inline-block'>X: {parseInt(this.state.x)}</p>  Y: {parseInt(-this.state.y)} </div></div>
             </div>
             <div style={{position: 'absolute', bottom: 0, left: 0, fontSize: '1.4rem', padding: '5px 5px', opacity: 0.7, width: '15%'}}>
               <div>
