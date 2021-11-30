@@ -16,10 +16,10 @@
 
 .map {
     image-rendering: pixelated;
-    background-image: url("https://assets.codepen.io/21542/CameraDemoMap.png");
+    background-image: url("https://i.imgur.com/a993R8f.png");
     background-size: 100%;
-    width: calc(13 * var(--grid-cell));
-    height: calc(10 * var(--grid-cell));
+    width: calc(150 * var(--grid-cell));
+    height: calc(10000 * var(--grid-cell));
     position: relative;
 }
 

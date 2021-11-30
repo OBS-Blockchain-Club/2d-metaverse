@@ -10,7 +10,7 @@ class Game extends Component{
   constructor(){
     super()
     this.state={
-      speed: 2,
+      speed: 1.5,
       shotCount: 0,
       account: null,
       web3: new Web3(window.ethereum),
@@ -245,7 +245,7 @@ class Game extends Component{
             </div>
             <div style={{position: 'absolute', bottom: 0, left: 0, fontSize: '1.4rem', padding: '5px 5px', opacity: 0.7, width: '15%'}}>
               <div>
-                <div id='chat'></div>
+                <div id='chat' className='bg-gray-200 bg-opacity-50 max-h-56'></div>
                 <div>
                     <input id='input' autoComplete='off' placeholder='Type your message here...' className='w-full focus:outline-none font-pixelated' style={{backgroundColor: 'rgba(255, 255, 255, 0.6)', borderRadius: '0.2rem', padding: '0.4rem 0.2rem', fontSize: '1rem'}} onKeyDown={(e) => {if(e.key==='Enter'){this.sendMessage(e.target.value); document.getElementById('input').value = '' }}}/>
                 </div>
