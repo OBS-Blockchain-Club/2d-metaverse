@@ -33,6 +33,8 @@ export class Landing extends Component{
               <input className="rounded-3xl" type="image" id="block" src="/playbutt.png" onMouseDown={() => {this.holdin()}} onClick={() => {this.playclick()}}/>
             </div>
           </div>
+
+            
       </div>
     );
   }
