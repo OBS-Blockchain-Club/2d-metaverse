@@ -1,26 +1,17 @@
 import { Component } from "react";
-import { Link } from 'react-router-dom';
 import '../App.css';
 
 export class Whitepaper extends Component {
-    constructor() {
-        super()
-        this.state={
-    
-        }
-      }
-    
-    
       render () {
-    
         return (
-          <div className="bg-black h-screen">
-
-            <div className="text-purple-700 pb-20 transform translate-y-5" style={{fontFamily:"Broken Console", textAlign:"left", filter: "drop-shadow(5px 5px 0 #4C1D95)", fontSize:"5.5rem"}}>
-              PIXEL NFT
+          <div className='px-5 pt-10 font-pixelated'>
+            <div className="  text-purple-700 transform translate-y-5" style={{fontFamily:"Broken Console", filter: "drop-shadow(5px 5px 0 #4C1D95)", fontSize:"5.5rem"}}>
+              Whitepaper
             </div>
-            <div style={{fontFamily:"Broken Console", color: "rgb(36, 211, 54", textAlign:"left"}}>
+            <div className='font-pixelated text-left' style={{color: "rgb(20, 191, 24)"}}>
+              <p>
               Hello, this is the white paper
+              </p>
             </div>
           </div>
         );
