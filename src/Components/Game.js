@@ -104,6 +104,7 @@ class Game extends Component{
       )
       ReactDOM.render(chat, document.getElementById('chat'))
     })
+    this.renderMonsters()
    
     document.addEventListener("keyup", (e) => {
       var dir = this.keys[e.which];
@@ -124,8 +125,8 @@ class Game extends Component{
         id: i, 
         facing: 'down',
         walking: 'false',
-        x: this.randomIntFromInterval(600, 800),
-        y: this.randomIntFromInterval(1400, 1700),
+        x: this.randomIntFromInterval(200, 2000),
+        y: this.randomIntFromInterval(200, 2200),
       }
       
     }
@@ -145,10 +146,21 @@ class Game extends Component{
         }
     }
   }
-
-  moveMonsters() {
+  
+  calcSpeed(prev, next) {
     
-  }
+    var x = Math.abs(prev[1] - next[1]);
+    var y = Math.abs(prev[0] - next[0]);
+    
+    var greatest = x > y ? x : y;
+    
+    var speedModifier = 0.2;
+
+    var speed = Math.ceil(greatest/speedModifier);
+
+    return speed;
+
+}
 
 
   placeCharacter () {
@@ -175,7 +187,7 @@ class Game extends Component{
       this.gameLoop()
       this.emitMovement(this.current_directions)
       this.renderOtherPlayers()
-      this.renderMonsters()
+      this.moveMonsters()
     })
   }
 
@@ -194,11 +206,28 @@ class Game extends Component{
     ReactDOM.render(otherPlayers, document.getElementById('otherPlayers'))
   }
 
+  moveMonsters() {
+    Object.keys(this.monsters).map((id, info) => {
+      const newX =  this.monsters[id].x += this.randomIntFromInterval(-5, 5)
+      const newY = this.monsters[id].y + this.randomIntFromInterval(-5, 5)
+      const speed = this.calcSpeed([this.monsters[id].y, this.monsters[id].x], [newX, newY])
+      document.getElementById(`monster#${id}`).animate({transform: `translate3d( ${newX * this.state.pixelSize}px, ${newY * this.state.pixelSize}px, 0)`}, speed)
+    })
+    const miniMonsters = (
+      <div>
+          {Object.keys(this.monsters).map((id, info) => (
+            <img className='relative' src='miniplayer.png' width='3' style={{top: (this.monsters[id].x/2380)*280, left: (this.monsters[id].y/2380)*280}} />
+          ))}
+      </div>
+    )
+    ReactDOM.render(miniMonsters, document.getElementById('minimonsters'))
+  }
+
   renderMonsters() {
     const monsters = (
       <div>
           {Object.keys(this.monsters).map((id, info) => (
-            <div key={id} id={id} className="character" facing={this.monsters[id].facing} walking={this.monsters[id].walking} style={{transform: `translate3d( ${this.monsters[id].x * this.state.pixelSize}px, ${this.monsters[id].y * this.state.pixelSize}px, 0)`}}>
+            <div key={id} id={"monster#" + id} className="character" facing={this.monsters[id].facing} walking={this.monsters[id].walking} style={{transform: `translate3d( ${this.monsters[id].x * this.state.pixelSize}px, ${this.monsters[id].y * this.state.pixelSize}px, 0)`}}>
               <div className="shadow pixel-art"></div>
               <div className="character_spritesheet pixel-art"></div>
             </div>
@@ -206,6 +235,7 @@ class Game extends Component{
       </div>
     )
     ReactDOM.render(monsters, document.getElementById('monsters'))
+
   }
 
   emitMovement (directions) {
@@ -274,8 +304,11 @@ class Game extends Component{
                 </div>
                 <div id='playershot'></div>
             </div>
-            <div className='float-right text-right items-end bg-gray-200 bg-opacity-50 rounded-md' style={{position: 'absolute', top: 2, right: 5, padding: '145px 145px', fontSize: '1rem', color: 'rgba(20, 20, 20, 0.6)', fontSize: '1.2rem'}}>
-              <div className='opacity-70 absolute top-0 right-0' style={{height: '280px', backgroundImage: 'url("https://i.imgur.com/a993R8f.png")', width:'280px', backgroundSize: '100%', top: 5, right: 5}}><img className='relative' src='miniplayer.png' width='3' style={{top: miniY, left: miniX}} /></div>
+            <div className='float-right text-right items-end bg-gray-200 bg-opacity-70 rounded-md' style={{position: 'absolute', top: 2, right: 5, padding: '145px 145px', fontSize: '1rem', color: 'rgba(20, 20, 20, 0.6)', fontSize: '1.2rem'}}>
+              <div className='opacity-70 absolute top-0 right-0' style={{height: '280px', backgroundImage: 'url("https://i.imgur.com/a993R8f.png")', width:'280px', backgroundSize: '100%', top: 5, right: 5}}>
+                <img className='relative' src='miniplayer.png' width='3' style={{top: miniY, left: miniX, filter: 'invert(100%)'}} />
+                <div id='minimonsters'></div>
+                </div>
             </div>
             <div className='float-right text-right items-end bg-gray-200 bg-opacity-50 rounded-md' style={{position: 'absolute', top: 295.5, right: 5, padding: '0.4rem 0.2rem', fontSize: '1rem', color: 'rgba(20, 20, 20, 0.6)', fontSize: '1.2rem'}}>
               <div className=' font-pixelated inline-block px-5 text-black'><p className={`text-${color}-600 inline-block`}>{this.state.health}</p>$LIFE</div>
