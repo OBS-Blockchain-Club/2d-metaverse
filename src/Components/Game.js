@@ -19,8 +19,7 @@ class Game extends Component{
       ),
       x: this.randomIntFromInterval(600, 800),
       y: this.randomIntFromInterval(1400, 1700),
-      monsterX: Math.random() *200,
-      monsterY: Math.random() *200
+      health: Math.floor(Math.random() * 100),
     }
 
     this.character = null;
@@ -31,10 +30,11 @@ class Game extends Component{
     this.sendMessage = this.sendMessage.bind(this)
     this.shootFromCoords = this.shootFromCoords.bind(this)
     this.players = [];
-    this.health = 58;
     this.chat = {};
     this.current_directions = [];
-    this.messages = []
+    this.messages = [];
+    this.monsters = [];
+    this.instantiateMonsters();
         
     this.directions = {
       up: "up",
@@ -80,6 +80,7 @@ class Game extends Component{
     this.socket.on('newPlayer', (msg) => {
       if(msg.address !== this.state.account) {
         console.log( msg.address + ' joined.')
+        console.log(msg)
         this.players[msg.address] = msg;
       }
     })
@@ -116,6 +117,19 @@ class Game extends Component{
     //   this.shootFromCoords(window.innerWidth/2, window.innerHeight/2, e.clientX/4, e.clientY/4.2)
     // });
   }
+
+  instantiateMonsters() {
+    for (let i = 0; i < 20; i++) {
+      this.monsters[i] = {
+        id: i, 
+        facing: 'down',
+        walking: 'false',
+        x: this.randomIntFromInterval(600, 800),
+        y: this.randomIntFromInterval(1400, 1700),
+      }
+      
+    }
+  }
   
   async connectWeb3(){
     if (window.ethereum) { 
@@ -130,6 +144,10 @@ class Game extends Component{
           console.log(error) } 
         }
     }
+  }
+
+  moveMonsters() {
+    
   }
 
 
@@ -157,7 +175,7 @@ class Game extends Component{
       this.gameLoop()
       this.emitMovement(this.current_directions)
       this.renderOtherPlayers()
-      // console.log((this.state.x - this.state.monsterX) + ' ' + (this.state.y - this.state.monsterY))
+      this.renderMonsters()
     })
   }
 
@@ -174,6 +192,20 @@ class Game extends Component{
       </div>
     )
     ReactDOM.render(otherPlayers, document.getElementById('otherPlayers'))
+  }
+
+  renderMonsters() {
+    const monsters = (
+      <div>
+          {Object.keys(this.monsters).map((id, info) => (
+            <div key={id} id={id} className="character" facing={this.monsters[id].facing} walking={this.monsters[id].walking} style={{transform: `translate3d( ${this.monsters[id].x * this.state.pixelSize}px, ${this.monsters[id].y * this.state.pixelSize}px, 0)`}}>
+              <div className="shadow pixel-art"></div>
+              <div className="character_spritesheet pixel-art"></div>
+            </div>
+          ))}
+      </div>
+    )
+    ReactDOM.render(monsters, document.getElementById('monsters'))
   }
 
   emitMovement (directions) {
@@ -219,38 +251,34 @@ class Game extends Component{
     const miniX = (this.state.x/2380)*280;
     const miniY = (this.state.y/2380)*280;
     let color = 'green'
-    if(this.health <= 20) {
+    if(this.state.health <= 20) {
       color = 'red'
-    } else if(this.health <= 60) {
+    } else if(this.state.health <= 60) {
       color = 'yellow'
     }
     return (
         <div className="App">
             <div className="camera" style={{height: '100vh', width: '100vw'}}>
                 <div className="map pixel-art" id='map'>
-                    {/* <div id='monster' className="character" facing='down' walking="false" style={{transform: `translate3d( ${this.players[address].x * this.state.pixelSize}px, ${this.players[address].y * this.state.pixelSize}px, 0)`}}>
-                      <div className="shadow pixel-art"></div>
-                      <div className="character_spritesheet pixel-art"></div>
-                    </div> */}
                     <div id='otherPlayers'></div>
+                    <div id='monsters'></div>
                     <div className="character" facing="down" walking="false">
                         <div className="shadow pixel-art"></div>
                         <div className="character_spritesheet pixel-art"></div>
-                        <div className={`bg-${color}-500 h-3 text-center text-sm leading-4`} style={{position: 'relative', width: `${this.health}%`}}>
+                        <div className={`bg-${color}-500 h-3 text-center text-sm leading-4`} style={{position: 'relative', width: `${this.state.health}%`}}>
                           <p className='text-center font-pixelated text-xs'>
-                            {this.health}
+                            {this.state.health}
                           </p>
                         </div>
                     </div>
-                    
                 </div>
                 <div id='playershot'></div>
             </div>
-            <div className='float-right text-right items-end bg-gray-200 bg-opacity-50 rounded-md' style={{position: 'absolute', top: 2, right: 5, padding: '150px 150px', fontSize: '1rem', color: 'rgba(20, 20, 20, 0.6)', fontSize: '1.2rem'}}>
-              <div className='opacity-70 absolute top-0 right-0' style={{height: '280px', backgroundImage: 'url("https://i.imgur.com/a993R8f.png")', width:'280px', backgroundSize: '100%'}}><img className='relative' src='miniplayer.png' width='3' style={{top: miniY, left: miniX}} /></div>
+            <div className='float-right text-right items-end bg-gray-200 bg-opacity-50 rounded-md' style={{position: 'absolute', top: 2, right: 5, padding: '145px 145px', fontSize: '1rem', color: 'rgba(20, 20, 20, 0.6)', fontSize: '1.2rem'}}>
+              <div className='opacity-70 absolute top-0 right-0' style={{height: '280px', backgroundImage: 'url("https://i.imgur.com/a993R8f.png")', width:'280px', backgroundSize: '100%', top: 5, right: 5}}><img className='relative' src='miniplayer.png' width='3' style={{top: miniY, left: miniX}} /></div>
             </div>
-            <div className='float-right text-right items-end bg-gray-200 bg-opacity-50 rounded-md' style={{position: 'absolute', top: 304.5, right: 5, padding: '0.4rem 0.5rem', fontSize: '1rem', color: 'rgba(20, 20, 20, 0.6)', fontSize: '1.2rem'}}>
-              <div className=' font-pixelated inline-block px-5 text-black'><p className={`text-${color}-600 inline-block`}>{this.health}</p>$LIFE</div>
+            <div className='float-right text-right items-end bg-gray-200 bg-opacity-50 rounded-md' style={{position: 'absolute', top: 295.5, right: 5, padding: '0.4rem 0.2rem', fontSize: '1rem', color: 'rgba(20, 20, 20, 0.6)', fontSize: '1.2rem'}}>
+              <div className=' font-pixelated inline-block px-5 text-black'><p className={`text-${color}-600 inline-block`}>{this.state.health}</p>$LIFE</div>
               <div className='font-pixelated inline-block text-black '>{shortenedAcc}</div>
               <br/><div className='inline-block text-black' id='coords'><div className='font-pixelated'><p className='px-10 inline-block'>X: {parseInt(this.state.x)}</p>  Y: {parseInt(-this.state.y)} </div></div>
             </div>
