@@ -105,7 +105,7 @@ class Game extends Component{
       )
       ReactDOM.render(chat, document.getElementById('chat'))
     })
-    this.renderMonsters()
+    // this.renderMonsters()
    
     document.addEventListener("keyup", (e) => {
       var dir = this.keys[e.which];
@@ -172,7 +172,7 @@ class Game extends Component{
       this.gameLoop()
       this.emitMovement(this.current_directions)
       this.renderOtherPlayers()
-      this.moveMonsters()
+      // this.moveMonsters()
       // this.dealPlayerDamage()
     })
   }
