@@ -38,8 +38,6 @@ class Game extends Component{
     this.chat = {};
     this.current_directions = [];
     this.messages = [];
-    this.monsters = [];
-    this.instantiateMonsters();
         
     this.directions = {
       up: "up",
@@ -105,7 +103,6 @@ class Game extends Component{
       )
       ReactDOM.render(chat, document.getElementById('chat'))
     })
-    // this.renderMonsters()
    
     document.addEventListener("keyup", (e) => {
       var dir = this.keys[e.which];
@@ -118,18 +115,6 @@ class Game extends Component{
     // document.addEventListener("mousedown", (e) => {
     //   this.shootFromCoords(window.innerWidth/2, window.innerHeight/2, e.clientX/4, e.clientY/4.2)
     // });
-  }
-
-  instantiateMonsters() {
-    for (let i = 0; i < 20; i++) {
-      this.monsters[i] = {
-        id: i, 
-        facing: 'down',
-        walking: 'false',
-        x: this.utils.randomIntFromInterval(200, 2000),
-        y: this.utils.randomIntFromInterval(200, 2200),
-      }
-    }
   }
   
   async connectWeb3(){
@@ -172,7 +157,6 @@ class Game extends Component{
       this.gameLoop()
       this.emitMovement(this.current_directions)
       this.renderOtherPlayers()
-      // this.moveMonsters()
       // this.dealPlayerDamage()
     })
   }
@@ -190,37 +174,6 @@ class Game extends Component{
       </div>
     )
     ReactDOM.render(otherPlayers, document.getElementById('otherPlayers'))
-  }
-
-  moveMonsters() {
-    Object.keys(this.monsters).map((id, info) => {
-      const newX =  this.monsters[id].x += this.utils.randomIntFromInterval(-10, 10)
-      const newY = this.monsters[id].y + this.utils.randomIntFromInterval(-10, 10)
-      const speed = this.utils.calcSpeed([this.monsters[id].y, this.monsters[id].x], [newX, newY])
-      document.getElementById(`monster#${id}`).animate({transform: `translate3d( ${newX * this.state.pixelSize}px, ${newY * this.state.pixelSize}px, 0)`}, speed)
-    })
-    const miniMonsters = (
-      <div>
-          {Object.keys(this.monsters).map((id, info) => (
-            <img key={'minimonster#' + id} className='relative' src='miniplayer.png' width='3' style={{top: (this.monsters[id].x/2380)*280, left: (this.monsters[id].y/2380)*280}} />
-          ))}
-      </div>
-    )
-    ReactDOM.render(miniMonsters, document.getElementById('minimonsters'))
-  }
-
-  renderMonsters() {
-    const monsters = (
-      <div>
-          {Object.keys(this.monsters).map((id, info) => (
-            <div key={id} id={"monster#" + id} className="character" facing={this.monsters[id].facing} walking={this.monsters[id].walking} style={{transform: `translate3d( ${this.monsters[id].x * this.state.pixelSize}px, ${this.monsters[id].y * this.state.pixelSize}px, 0)`}}>
-              <div className="shadow pixel-art"></div>
-              <div className="character_spritesheet pixel-art"></div>
-            </div>
-          ))}
-      </div>
-    )
-    ReactDOM.render(monsters, document.getElementById('monsters'))
   }
 
   emitMovement (directions) {
@@ -252,14 +205,6 @@ class Game extends Component{
   //   ReactDOM.unmountComponentAtNode(document.getElementById(arrowId))
   // }
 
-  // dealPlayerDamage () {
-  //   Object.keys(this.monsters).map((id, info) => {
-  //     if((this.state.x - this.monsters[id].x) <= 10 && (this.state.x - this.monsters[id].x) >= -10 && (this.state.y - this.monsters[id].y) <= 10 && (this.state.y - this.monsters[id].y) >= -10 ) {
-  //       this.state.health -= 1;
-  //     }
-  //   })
-  // }
-
   sendMessage(msg) {
     const data = {
       address: this.state.account,
@@ -285,7 +230,6 @@ class Game extends Component{
             <div className="camera" style={{height: '100vh', width: '100vw'}}>
                 <div className="map pixel-art" id='map'>
                     <div id='otherPlayers'></div>
-                    <div id='monsters'></div>
                     <div className="character" facing="down" walking="false">
                         <div className="shadow pixel-art"></div>
                         <div className="character_spritesheet pixel-art"></div>
@@ -301,7 +245,6 @@ class Game extends Component{
             <div className='float-right text-right items-end bg-gray-200 bg-opacity-70 rounded-md' style={{position: 'absolute', top: 2, right: 5, padding: '145px 145px', fontSize: '1rem', color: 'rgba(20, 20, 20, 0.6)', fontSize: '1.2rem'}}>
               <div className='opacity-70 absolute top-0 right-0' style={{height: '280px', backgroundImage: 'url("https://i.imgur.com/a993R8f.png")', width:'280px', backgroundSize: '100%', top: 5, right: 5}}>
                   <img className='relative' src='miniplayer.png' width='3' style={{top: miniY, left: miniX, filter: 'invert(100%)'}} />
-                  <div id='minimonsters'></div>
                 </div>
             </div>
             <div className='float-right text-right items-end bg-gray-200 bg-opacity-50 rounded-md' style={{position: 'absolute', top: 295.5, right: 5, padding: '0.4rem 0.2rem', fontSize: '1rem', color: 'rgba(20, 20, 20, 0.6)', fontSize: '1.2rem'}}>
