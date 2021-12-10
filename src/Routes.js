@@ -1,9 +1,9 @@
 import { Switch, Route } from "react-router-dom";
-import Game from "./Components/Game";
-import { Landing } from "./Components/Landing";
-import Mint from "./Components/Mint";
-import { Navbar } from "./Components/Navbar";
-import { Whitepaper } from "./Components/Whitepaper";
+import Game from "./Pages/Game";
+import { Landing } from "./Pages/Landing";
+import Mint from "./Pages/Mint";
+import { Navbar } from "./Pages/Navbar";
+import { Whitepaper } from "./Pages/Whitepaper";
 
 export function Pages() {
     return(

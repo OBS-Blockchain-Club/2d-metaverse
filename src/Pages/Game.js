@@ -4,11 +4,16 @@ import './game.css';
 import ReactDOM from 'react-dom';
 import Web3 from 'web3';
 import socketClient from "socket.io-client";
+import Utils from '../Components/service';
+import GameOptions from '../Components/GameOptions';
+import Web3Manager from '../Components/Web3Manager';
 
 class Game extends Component{
 
   constructor(){
     super()
+    
+    this.utils = new Utils();
     this.state={
       speed: 1.5,
       shotCount: 0,
@@ -17,8 +22,8 @@ class Game extends Component{
       pixelSize: parseInt(
         getComputedStyle(document.documentElement).getPropertyValue('--pixel-size')
       ),
-      x: this.randomIntFromInterval(600, 800),
-      y: this.randomIntFromInterval(1400, 1700),
+      x: this.utils.randomIntFromInterval(600, 800),
+      y: this.utils.randomIntFromInterval(1400, 1700),
       health: Math.floor(Math.random() * 100),
     }
 
@@ -28,7 +33,7 @@ class Game extends Component{
     this.placeCharacter = this.placeCharacter.bind(this)
     this.gameLoop = this.gameLoop.bind(this)
     this.sendMessage = this.sendMessage.bind(this)
-    this.shootFromCoords = this.shootFromCoords.bind(this)
+    // this.shootFromCoords = this.shootFromCoords.bind(this)
     this.players = [];
     this.chat = {};
     this.current_directions = [];
@@ -48,10 +53,6 @@ class Game extends Component{
       68: this.directions.right,
       83: this.directions.down,
    }
-  }
-
-  randomIntFromInterval(min, max) {
-    return Math.floor(Math.random() * (max - min + 1) + min)
   }
 
   async componentDidMount () {
@@ -125,10 +126,9 @@ class Game extends Component{
         id: i, 
         facing: 'down',
         walking: 'false',
-        x: this.randomIntFromInterval(200, 2000),
-        y: this.randomIntFromInterval(200, 2200),
+        x: this.utils.randomIntFromInterval(200, 2000),
+        y: this.utils.randomIntFromInterval(200, 2200),
       }
-      
     }
   }
   
@@ -147,21 +147,6 @@ class Game extends Component{
     }
   }
   
-  calcSpeed(prev, next) {
-    
-    var x = Math.abs(prev[1] - next[1]);
-    var y = Math.abs(prev[0] - next[0]);
-    
-    var greatest = x > y ? x : y;
-    
-    var speedModifier = 0.2;
-
-    var speed = Math.ceil(greatest/speedModifier);
-
-    return speed;
-
-}
-
 
   placeCharacter () {
     const held_direction = this.current_directions[0];
@@ -188,6 +173,7 @@ class Game extends Component{
       this.emitMovement(this.current_directions)
       this.renderOtherPlayers()
       this.moveMonsters()
+      // this.dealPlayerDamage()
     })
   }
 
@@ -208,15 +194,15 @@ class Game extends Component{
 
   moveMonsters() {
     Object.keys(this.monsters).map((id, info) => {
-      const newX =  this.monsters[id].x += this.randomIntFromInterval(-5, 5)
-      const newY = this.monsters[id].y + this.randomIntFromInterval(-5, 5)
-      const speed = this.calcSpeed([this.monsters[id].y, this.monsters[id].x], [newX, newY])
+      const newX =  this.monsters[id].x += this.utils.randomIntFromInterval(-10, 10)
+      const newY = this.monsters[id].y + this.utils.randomIntFromInterval(-10, 10)
+      const speed = this.utils.calcSpeed([this.monsters[id].y, this.monsters[id].x], [newX, newY])
       document.getElementById(`monster#${id}`).animate({transform: `translate3d( ${newX * this.state.pixelSize}px, ${newY * this.state.pixelSize}px, 0)`}, speed)
     })
     const miniMonsters = (
       <div>
           {Object.keys(this.monsters).map((id, info) => (
-            <img className='relative' src='miniplayer.png' width='3' style={{top: (this.monsters[id].x/2380)*280, left: (this.monsters[id].y/2380)*280}} />
+            <img key={'minimonster#' + id} className='relative' src='miniplayer.png' width='3' style={{top: (this.monsters[id].x/2380)*280, left: (this.monsters[id].y/2380)*280}} />
           ))}
       </div>
     )
@@ -235,7 +221,6 @@ class Game extends Component{
       </div>
     )
     ReactDOM.render(monsters, document.getElementById('monsters'))
-
   }
 
   emitMovement (directions) {
@@ -251,21 +236,29 @@ class Game extends Component{
     }
   }
 
-  shootFromCoords(x, y, toX, toY) {
-    const arrowId = 'arrow' + this.state.shotCount
-    const shot = (
-      <div id={arrowId} className='shot' style={{top: y+7, left: x+30, position: 'absolute'}}>
-        <img src='shot.png' alt='fireball'/>
-      </div>
-    )
-    ReactDOM.render(shot, document.getElementById('playershot'))
-    setTimeout(() => {
-      var arrow = document.getElementById(arrowId)
-      arrow.style.transform = `translate3d(${toX}px,${toY}px, 0)`
-    }, 200)
-    this.setState({shotCount: this.state.shotCount + 1})
-    ReactDOM.unmountComponentAtNode(document.getElementById(arrowId))
-  }
+  // shootFromCoords(x, y, toX, toY) {
+  //   const arrowId = 'arrow' + this.state.shotCount
+  //   const shot = (
+  //     <div id={arrowId} className='shot' style={{top: y+7, left: x+30, position: 'absolute'}}>
+  //       <img src='shot.png' alt='fireball'/>
+  //     </div>
+  //   )
+  //   ReactDOM.render(shot, document.getElementById('playershot'))
+  //   setTimeout(() => {
+  //     var arrow = document.getElementById(arrowId)
+  //     arrow.style.transform = `translate3d(${toX}px,${toY}px, 0)`
+  //   }, 200)
+  //   this.setState({shotCount: this.state.shotCount + 1})
+  //   ReactDOM.unmountComponentAtNode(document.getElementById(arrowId))
+  // }
+
+  // dealPlayerDamage () {
+  //   Object.keys(this.monsters).map((id, info) => {
+  //     if((this.state.x - this.monsters[id].x) <= 10 && (this.state.x - this.monsters[id].x) >= -10 && (this.state.y - this.monsters[id].y) <= 10 && (this.state.y - this.monsters[id].y) >= -10 ) {
+  //       this.state.health -= 1;
+  //     }
+  //   })
+  // }
 
   sendMessage(msg) {
     const data = {
@@ -286,6 +279,7 @@ class Game extends Component{
     } else if(this.state.health <= 60) {
       color = 'yellow'
     }
+
     return (
         <div className="App">
             <div className="camera" style={{height: '100vh', width: '100vw'}}>
@@ -306,8 +300,8 @@ class Game extends Component{
             </div>
             <div className='float-right text-right items-end bg-gray-200 bg-opacity-70 rounded-md' style={{position: 'absolute', top: 2, right: 5, padding: '145px 145px', fontSize: '1rem', color: 'rgba(20, 20, 20, 0.6)', fontSize: '1.2rem'}}>
               <div className='opacity-70 absolute top-0 right-0' style={{height: '280px', backgroundImage: 'url("https://i.imgur.com/a993R8f.png")', width:'280px', backgroundSize: '100%', top: 5, right: 5}}>
-                <img className='relative' src='miniplayer.png' width='3' style={{top: miniY, left: miniX, filter: 'invert(100%)'}} />
-                <div id='minimonsters'></div>
+                  <img className='relative' src='miniplayer.png' width='3' style={{top: miniY, left: miniX, filter: 'invert(100%)'}} />
+                  <div id='minimonsters'></div>
                 </div>
             </div>
             <div className='float-right text-right items-end bg-gray-200 bg-opacity-50 rounded-md' style={{position: 'absolute', top: 295.5, right: 5, padding: '0.4rem 0.2rem', fontSize: '1rem', color: 'rgba(20, 20, 20, 0.6)', fontSize: '1.2rem'}}>
@@ -323,7 +317,6 @@ class Game extends Component{
                 </div>
               </div>
             </div>
-            
         </div>
     );
   }
