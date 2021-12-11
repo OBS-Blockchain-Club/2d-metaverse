@@ -45,3 +45,12 @@
 .font-pixelated {
   font-family: 'Broken Console';
 }
+
+@font-face {
+  font-family: 'ka1';
+  src: url('ka1.ttf') format('truetype');
+}
+
+.font-ka1 {
+  font-family: 'ka1';
+}

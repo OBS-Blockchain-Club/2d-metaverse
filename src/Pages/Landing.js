@@ -22,7 +22,7 @@ export class Landing extends Component{
 
         <div className="">
             <div className=" flex justify-center items-center ">
-              <div className="text-purple-800 pt-32 transform translate-y-1 font-pixelated" style={{filter: "drop-shadow(5px 5px 0 #000000)", fontSize:"5.5rem"}}>
+              <div className="text-purple-800 pt-32 transform translate-y-1 font-ka1" style={{filter: "drop-shadow(5px 5px 0 #000000)", fontSize:"5.5rem"}}>
                 PIXEL NFT
               </div>
             </div>

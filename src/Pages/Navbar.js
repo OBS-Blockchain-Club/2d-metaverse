@@ -46,7 +46,7 @@ export class Navbar extends Component {
           <div className="fixed w-screen bg-blue-300">
               <div className="flex justify-between py-0">
                 <div className='flex items-end'>
-                  <div className="px-2 text-purple-800 align-bottom" style={{fontFamily:"Broken Console",filter: "drop-shadow(2px 2px 0 #000000)", fontSize:"2rem"}}>
+                  <div className="px-2 text-purple-800 align-bottom" style={{fontFamily:"ka1",filter: "drop-shadow(2px 2px 0 #000000)", fontSize:"2rem"}}>
                     <Link to="/">PIXEL NFT</Link>
                   </div>
                   {Object.keys(tabs).map((path, css) => (
