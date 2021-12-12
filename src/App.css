@@ -36,3 +36,21 @@
     transform: rotate(360deg);
   }
 }
+
+@font-face {
+  font-family: 'Broken Console';
+  src: url('Broken\ Console\ Bold.ttf') format('truetype'); 
+}
+
+.font-pixelated {
+  font-family: 'Broken Console';
+}
+
+@font-face {
+  font-family: 'ka1';
+  src: url('ka1.ttf') format('truetype');
+}
+
+.font-ka1 {
+  font-family: 'ka1';
+}

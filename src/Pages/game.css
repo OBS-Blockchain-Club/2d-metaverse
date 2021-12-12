@@ -16,10 +16,10 @@
 
 .map {
     image-rendering: pixelated;
-    background-image: url("https://assets.codepen.io/21542/CameraDemoMap.png");
+    background-image: url("https://i.imgur.com/a993R8f.png");
     background-size: 100%;
-    width: calc(13 * var(--grid-cell));
-    height: calc(10 * var(--grid-cell));
+    width: calc(150 * var(--grid-cell));
+    height: calc(150 * var(--grid-cell));
     position: relative;
 }
 
@@ -28,6 +28,7 @@
     height: calc( var(--grid-cell)* 2 );
     position: absolute;
     overflow:hidden;
+    border: 0;
  }
 
  .shadow {
@@ -38,6 +39,7 @@
     top:0;
     background: url("https://assets.codepen.io/21542/DemoRpgCharacterShadow.png") no-repeat no-repeat;
     background-size: 100%;
+    border: 0;
  }
 
  .character_spritesheet {
@@ -46,6 +48,7 @@
     background-size: 100%;
     width: calc( var(--grid-cell)* 8 );
     height: calc( var(--grid-cell)* 8 );
+    border: 0;
  }
  
  .character[facing="right"] .character_spritesheet {

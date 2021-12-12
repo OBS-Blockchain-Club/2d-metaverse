@@ -4,12 +4,15 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        'pixelated': ['Press Start 2P']
+
       }
     },
   },
   variants: {
-    extend: {},
+    extend: {
+      // ...
+     borderWidth: ['hover', 'focus'],
+    }
   },
   plugins: [],
 }
