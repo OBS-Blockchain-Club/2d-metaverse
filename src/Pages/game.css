@@ -24,16 +24,16 @@
 }
 
 .character {
-    width: calc( var(--grid-cell)* 2 );
-    height: calc( var(--grid-cell)* 2 );
+    width: calc( var(--grid-cell)* 3 );
+    height: calc( var(--grid-cell)* 3 );
     position: absolute;
     overflow:hidden;
     border: 0;
  }
 
  .shadow {
-    width: calc( var(--grid-cell)* 2 );
-    height: calc( var(--grid-cell)* 2 );
+    width: calc( var(--grid-cell)* 3 );
+    height: calc( var(--grid-cell)* 3 );
     position: absolute;
     left:0;
     top:0;
@@ -44,21 +44,21 @@
 
  .character_spritesheet {
     position: absolute;
-    background: url("https://assets.codepen.io/21542/DemoRpgCharacter.png") no-repeat no-repeat;
+    background: url("https://dg.kesar.dev/character.png") no-repeat no-repeat;
     background-size: 100%;
-    width: calc( var(--grid-cell)* 8 );
-    height: calc( var(--grid-cell)* 8 );
+    width: calc( var(--grid-cell)* 12 );
+    height: calc( var(--grid-cell)* 12 );
     border: 0;
  }
  
  .character[facing="right"] .character_spritesheet {
-    background-position-y: calc( var(--pixel-size) * -32 );
+    background-position-y: calc( var(--pixel-size) * -48 );
  }
  .character[facing="up"] .character_spritesheet {
-    background-position-y: calc( var(--pixel-size) * -64 );
+    background-position-y: calc( var(--pixel-size) * -96 );
  }
  .character[facing="left"] .character_spritesheet {
-    background-position-y: calc( var(--pixel-size) * -96 );
+    background-position-y: calc( var(--pixel-size) * -144 );
  }
  .character[walking="true"] .character_spritesheet {
     animation: walkAnimation 0.6s steps(4) infinite; 

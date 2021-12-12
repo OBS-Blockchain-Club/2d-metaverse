@@ -24,7 +24,7 @@ class Game extends Component{
       ),
       x: this.utils.randomIntFromInterval(600, 800),
       y: this.utils.randomIntFromInterval(1400, 1700),
-      health: Math.floor(Math.random() * 100),
+      health: 100/*Math.floor(Math.random() * 100)*/,
     }
 
     this.character = null;
@@ -233,11 +233,11 @@ class Game extends Component{
                     <div className="character" facing="down" walking="false">
                         <div className="shadow pixel-art"></div>
                         <div className="character_spritesheet pixel-art"></div>
-                        <div className={`bg-${color}-500 h-3 text-center text-sm leading-4`} style={{position: 'relative', width: `${this.state.health}%`}}>
+                        {/* <div className={`bg-${color}-500 h-3 text-center text-sm leading-4`} style={{position: 'absolute', bottom: 0, width: `${this.state.health/2}%`}}>
                           <p className='text-center font-pixelated text-xs'>
                             {this.state.health}
                           </p>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
                 <div id='playershot'></div>
@@ -248,7 +248,7 @@ class Game extends Component{
                 </div>
             </div>
             <div className='float-right text-right items-end bg-gray-200 bg-opacity-50 rounded-md' style={{position: 'absolute', top: 295.5, right: 5, padding: '0.4rem 0.2rem', fontSize: '1rem', color: 'rgba(20, 20, 20, 0.6)', fontSize: '1.2rem'}}>
-              <div className=' font-pixelated inline-block px-5 text-black'><p className={`text-${color}-600 inline-block`}>{this.state.health}</p>$LIFE</div>
+              <div className='font-pixelated inline-block px-5 text-black'><p className={`text-${color}-600 inline-block`}>{this.state.health}</p>$LIFE</div>
               <div className='font-pixelated inline-block text-black '>{shortenedAcc}</div>
               <br/><div className='inline-block text-black' id='coords'><div className='font-pixelated'><p className='px-10 inline-block'>X: {parseInt(this.state.x)}</p>  Y: {parseInt(-this.state.y)} </div></div>
             </div>
