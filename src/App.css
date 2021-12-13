@@ -60,7 +60,7 @@
   background-size: auto 100%;
   height: 100vh;
   width: 5076px;
-  animation: slide 240s linear infinite;
+  animation: slide 50s linear infinite;
   position: fixed;
   pointer-events: none;
 }
