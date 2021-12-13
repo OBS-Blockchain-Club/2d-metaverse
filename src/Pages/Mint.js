@@ -45,7 +45,7 @@ export default class Mint extends Component {
             <div className="pt-24">
                 <div id="title" className="text-white text-5xl pb-10 font-pixelated pt-4 ">MINT YOUR CHARACTER</div>
                 <div className="flex justify-center items-center xl:mx-20">
-                  <div className="bg-indigo-400 grid p-10 sm:grid-cols-1 lg:grid-cols-3 mx-20 rounded justify-center items-center" style={{width:"90%"}}>
+                  <div className="bg-indigo-400 grid px-10 sm:grid-cols-1 lg:grid-cols-3 mx-20 rounded justify-center items-center" style={{width:"90%"}}>
                     {this.classes.map((info, index) => (
                       <div key={index} className="flex justify-center items-center">
                         <div className={`w-96 my-10 mx-3 border-8 text-white bg-opacity-20 ${info.bgColor}`}>
