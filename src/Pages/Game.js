@@ -2,14 +2,16 @@
 import { Component } from 'react';
 import './game.css';
 import ReactDOM from 'react-dom';
-import Web3 from 'web3';
 import socketClient from "socket.io-client";
 import Utils from '../Components/service';
 import GameOptions from '../Components/GameOptions';
-import Web3Manager from '../Components/Web3Manager';
-import WebsocketManager from '../Components/WebsocketManager';
-import { Chat } from '../Components/Chat';
-import Minimap from '../Components/Minimap';
+import {
+  Chat,
+  Minimap,
+  WebsocketManager,
+  Web3Manager,
+
+} from '../Components/index';
 
 class Game extends Component{
 

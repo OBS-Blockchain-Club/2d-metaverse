@@ -1,4 +1,4 @@
-export default class Web3Manager {
+export class Web3Manager {
 
     static async connectWeb3(){
         if (window.ethereum) { 

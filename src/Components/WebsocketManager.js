@@ -1,7 +1,7 @@
 import socketClient from "socket.io-client";
 import Game from "../Pages/Game";
 
-export default class WebsocketManager {
+export class WebsocketManager {
     static socket = socketClient('wss://pixel-art.kesarx.repl.co');
     
     static sendMessage(message, address) {
