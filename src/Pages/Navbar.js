@@ -43,7 +43,7 @@ export class Navbar extends Component {
 
     return (
       <div>
-          <div className="absolte top-0 w-screen bg-blue-300">
+          <div className=" w-screen bg-blue-300">
               <div className="flex justify-between py-0">
                 <div className='flex items-end'>
                   <div className="px-2 text-purple-800 align-bottom" style={{fontFamily:"ka1",filter: "drop-shadow(2px 2px 0 #000000)", fontSize:"2rem"}}>

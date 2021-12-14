@@ -24,7 +24,6 @@ class Game extends Component{
       ),
       x: this.utils.randomIntFromInterval(600, 800),
       y: this.utils.randomIntFromInterval(1400, 1700),
-      health: 100/*Math.floor(Math.random() * 100)*/,
     }
 
     this.character = null;
@@ -33,7 +32,6 @@ class Game extends Component{
     this.placeCharacter = this.placeCharacter.bind(this)
     this.gameLoop = this.gameLoop.bind(this)
     this.sendMessage = this.sendMessage.bind(this)
-    // this.shootFromCoords = this.shootFromCoords.bind(this)
     this.players = [];
     this.chat = {};
     this.current_directions = [];
@@ -111,10 +109,6 @@ class Game extends Component{
         this.current_directions.splice(index, 1)
       }
     });
-
-    // document.addEventListener("mousedown", (e) => {
-    //   this.shootFromCoords(window.innerWidth/2, window.innerHeight/2, e.clientX/4, e.clientY/4.2)
-    // });
   }
   
   async connectWeb3(){
@@ -126,7 +120,7 @@ class Game extends Component{
         })
         }catch (error) { 
           if (error.code === 4001) 
-        { // User rejected request } 
+        { // User rejected request 
           console.log(error) } 
         }
     }
@@ -189,22 +183,6 @@ class Game extends Component{
     }
   }
 
-  // shootFromCoords(x, y, toX, toY) {
-  //   const arrowId = 'arrow' + this.state.shotCount
-  //   const shot = (
-  //     <div id={arrowId} className='shot' style={{top: y+7, left: x+30, position: 'absolute'}}>
-  //       <img src='shot.png' alt='fireball'/>
-  //     </div>
-  //   )
-  //   ReactDOM.render(shot, document.getElementById('playershot'))
-  //   setTimeout(() => {
-  //     var arrow = document.getElementById(arrowId)
-  //     arrow.style.transform = `translate3d(${toX}px,${toY}px, 0)`
-  //   }, 200)
-  //   this.setState({shotCount: this.state.shotCount + 1})
-  //   ReactDOM.unmountComponentAtNode(document.getElementById(arrowId))
-  // }
-
   sendMessage(msg) {
     const data = {
       address: this.state.account,
@@ -218,12 +196,6 @@ class Game extends Component{
     const shortenedAcc = this.state.account ? account.substring(0, 6) + '...' + account.substring(account.length-5, account.length) : ''
     const miniX = (this.state.x/2380)*280;
     const miniY = (this.state.y/2380)*280;
-    let color = 'green'
-    if(this.state.health <= 20) {
-      color = 'red'
-    } else if(this.state.health <= 60) {
-      color = 'yellow'
-    }
 
     return (
         <div className="App">
@@ -233,14 +205,8 @@ class Game extends Component{
                     <div className="character" facing="down" walking="false">
                         <div className="shadow pixel-art"></div>
                         <div className="character_spritesheet pixel-art"></div>
-                        {/* <div className={`bg-${color}-500 h-3 text-center text-sm leading-4`} style={{position: 'absolute', bottom: 0, width: `${this.state.health/2}%`}}>
-                          <p className='text-center font-pixelated text-xs'>
-                            {this.state.health}
-                          </p>
-                        </div> */}
                     </div>
                 </div>
-                <div id='playershot'></div>
             </div>
             <div className='float-right text-right items-end bg-gray-200 bg-opacity-70 rounded-md' style={{position: 'absolute', top: 2, right: 5, padding: '145px 145px', fontSize: '1rem', color: 'rgba(20, 20, 20, 0.6)', fontSize: '1.2rem'}}>
               <div className='opacity-70 absolute top-0 right-0' style={{height: '280px', backgroundImage: 'url("https://i.imgur.com/a993R8f.png")', width:'280px', backgroundSize: '100%', top: 5, right: 5}}>
@@ -248,7 +214,7 @@ class Game extends Component{
                 </div>
             </div>
             <div className='float-right text-right items-end bg-gray-200 bg-opacity-50 rounded-md' style={{position: 'absolute', top: 295.5, right: 5, padding: '0.4rem 0.2rem', fontSize: '1rem', color: 'rgba(20, 20, 20, 0.6)', fontSize: '1.2rem'}}>
-              <div className='font-pixelated inline-block px-5 text-black'><p className={`text-${color}-600 inline-block`}>{this.state.health}</p>$LIFE</div>
+              <div className='font-pixelated inline-block px-5 text-black'><p className={`text-gray-600 inline-block`}></p>100 $LIFE</div>
               <div className='font-pixelated inline-block text-black '>{shortenedAcc}</div>
               <br/><div className='inline-block text-black' id='coords'><div className='font-pixelated'><p className='px-10 inline-block'>X: {parseInt(this.state.x)}</p>  Y: {parseInt(-this.state.y)} </div></div>
             </div>
