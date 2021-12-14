@@ -1,11 +1,11 @@
 import { Component } from "react";
 import GameOptions from "./GameOptions"
+import Game from '../Pages/Game.js';
 
 export class Minimap extends Component {
     constructor(props) {
         super(props)   
     }
-    
 
     render() {
         const account = this.props.account

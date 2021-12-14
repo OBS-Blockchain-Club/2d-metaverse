@@ -4,6 +4,7 @@ import './game.css';
 import ReactDOM from 'react-dom';
 import socketClient from "socket.io-client";
 import Utils from '../Components/service';
+import { Navbar, Nav } from 'react-bootstrap'
 import GameOptions from '../Components/GameOptions';
 import {
   Chat,
@@ -29,6 +30,7 @@ class Game extends Component{
       ),
       x: this.utils.randomIntFromInterval(600, 800),
       y: this.utils.randomIntFromInterval(1400, 1700),
+      editopen: true
     }
 
     this.character = null;
@@ -52,6 +54,14 @@ class Game extends Component{
       83: this.directions.down,
    }
   }
+
+  
+  editacc(){
+    console.log("hi")
+    this.setState({editopen: false})
+    console.log(this.state.editopen)
+
+  }    
 
   borderrestriction(){
     this.map = document.querySelector(".map");
@@ -128,7 +138,6 @@ class Game extends Component{
     });
   }
 
-  
   async connectWeb3(){
     if (window.ethereum) { 
       try { 
@@ -188,7 +197,7 @@ class Game extends Component{
 
   render() {
     return (
-        <div className="App">
+        <div className="App oveflow-hidden">
             <div className="camera" style={{height: '100vh', width: '100vw'}}>
                 <div className="map pixel-art  border-4 border-purple-500" id='map'>
                     <div id='otherPlayers'></div>
