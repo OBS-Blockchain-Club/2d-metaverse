@@ -14,4 +14,15 @@ export default class Web3Manager {
         }
     }
 
+    static async getNFTsfromSubgraph() {
+
+    }
+    
+    static async getNFTPlayer() {
+
+    }
+
+    static async getTokenBalance () {
+
+    }
 }

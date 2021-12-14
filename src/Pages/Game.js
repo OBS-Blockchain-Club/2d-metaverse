@@ -20,7 +20,6 @@ class Game extends Component{
     
     this.utils = new Utils();
     this.state={
-      speed: 1.5,
       shotCount: 0,
       account: null,
       pixelSize: parseInt(
@@ -104,10 +103,10 @@ class Game extends Component{
   placeCharacter () {
     const held_direction = this.current_directions[0];
     if (held_direction) {
-       if (held_direction === this.directions.right) {this.setState({x: this.state.x + this.state.speed});}
-       if (held_direction === this.directions.left) {this.setState({x: this.state.x - this.state.speed});}
-       if (held_direction === this.directions.down) {this.setState({y: this.state.y + this.state.speed});}
-       if (held_direction === this.directions.up) {this.setState({y: this.state.y - this.state.speed});;}
+       if (held_direction === this.directions.right) {this.setState({x: this.state.x + GameOptions.speed});}
+       if (held_direction === this.directions.left) {this.setState({x: this.state.x - GameOptions.speed});}
+       if (held_direction === this.directions.down) {this.setState({y: this.state.y + GameOptions.speed});}
+       if (held_direction === this.directions.up) {this.setState({y: this.state.y - GameOptions.speed});;}
        this.character.setAttribute("facing", held_direction);
     }
     this.character.setAttribute("walking", held_direction ? "true" : "false");

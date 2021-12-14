@@ -3,4 +3,5 @@ export default class GameOptions {
     static websocketUrl = 'wss://pixel-art.kesarx.repl.co';
     static multiplayer = true;
     static chat = true;
+    static speed = 1.5;
 }
