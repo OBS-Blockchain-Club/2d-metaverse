@@ -63,6 +63,7 @@
   animation: slide 50s linear infinite;
   position: fixed;
   pointer-events: none;
+  image-rendering: pixelated;
 }
 
 @keyframes slide {

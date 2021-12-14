@@ -2,13 +2,16 @@
 import { Component } from 'react';
 import './game.css';
 import ReactDOM from 'react-dom';
-import Web3 from 'web3';
 import socketClient from "socket.io-client";
 import Utils from '../Components/service';
 import GameOptions from '../Components/GameOptions';
-import Web3Manager from '../Components/Web3Manager';
-import WebsocketManager from '../Components/WebsocketManager';
-import { Chat } from '../Components/Chat';
+import {
+  Chat,
+  Minimap,
+  WebsocketManager,
+  Web3Manager,
+
+} from '../Components/index';
 
 class Game extends Component{
 
@@ -19,7 +22,6 @@ class Game extends Component{
     
     this.utils = new Utils();
     this.state={
-      speed: 1.5,
       shotCount: 0,
       account: null,
       pixelSize: parseInt(
@@ -145,10 +147,10 @@ class Game extends Component{
   placeCharacter () {
     const held_direction = this.current_directions[0];
     if (held_direction) {
-       if (held_direction === this.directions.right) {this.setState({x: this.state.x + this.state.speed});}
-       if (held_direction === this.directions.left) {this.setState({x: this.state.x - this.state.speed});}
-       if (held_direction === this.directions.down) {this.setState({y: this.state.y + this.state.speed});}
-       if (held_direction === this.directions.up) {this.setState({y: this.state.y - this.state.speed});;}
+       if (held_direction === this.directions.right) {this.setState({x: this.state.x + GameOptions.speed});}
+       if (held_direction === this.directions.left) {this.setState({x: this.state.x - GameOptions.speed});}
+       if (held_direction === this.directions.down) {this.setState({y: this.state.y + GameOptions.speed});}
+       if (held_direction === this.directions.up) {this.setState({y: this.state.y - GameOptions.speed});;}
        this.character.setAttribute("facing", held_direction);
     }
     this.character.setAttribute("walking", held_direction ? "true" : "false");
@@ -171,7 +173,6 @@ class Game extends Component{
   }
 
   renderOtherPlayers() {
-    // console.log(this.players)
     const otherPlayers = (
       <div>
           {Object.keys(this.players).map((address, info) => (
@@ -186,11 +187,6 @@ class Game extends Component{
   }
 
   render() {
-    const account = this.state.account
-    const shortenedAcc = this.state.account ? account.substring(0, 6) + '...' + account.substring(account.length-5, account.length) : ''
-    const miniX = (this.state.x/2380)*280;
-    const miniY = (this.state.y/2380)*280;
-
     return (
         <div className="App">
             <div className="camera" style={{height: '100vh', width: '100vw'}}>
@@ -202,16 +198,11 @@ class Game extends Component{
                     </div>
                 </div>
             </div>
-            <div className='float-right text-right items-end bg-gray-200 bg-opacity-70 rounded-md' style={{position: 'absolute', top: 2, right: 5, padding: '145px 145px', fontSize: '1rem', color: 'rgba(20, 20, 20, 0.6)', fontSize: '1.2rem'}}>
-              <div className='opacity-70 absolute top-0 right-0' style={{height: '280px', backgroundImage: 'url("https://i.imgur.com/a993R8f.png")', width:'280px', backgroundSize: '100%', top: 5, right: 5}}>
-                  <img className='relative' src='miniplayer.png' width='3' style={{top: miniY, left: miniX, filter: 'invert(100%)'}} />
-                </div>
-            </div>
-            <div className='float-right text-right items-end bg-gray-200 bg-opacity-50 rounded-md' style={{position: 'absolute', top: 295.5, right: 5, padding: '0.4rem 0.2rem', fontSize: '1rem', color: 'rgba(20, 20, 20, 0.6)', fontSize: '1.2rem'}}>
-              <div className='font-pixelated inline-block px-5 text-black'><p className={`text-gray-600 inline-block`}></p>100 $LIFE</div>
-              <div className='font-pixelated inline-block text-black '>{shortenedAcc}</div>
-              <br/><div className='inline-block text-black' id='coords'><div className='font-pixelated'><p className='px-10 inline-block'>X: {parseInt(this.state.x)}</p>  Y: {parseInt(-this.state.y)} </div></div>
-            </div>
+            <Minimap 
+              x={this.state.x}
+              y={this.state.y}
+              account={this.state.account}
+            />
             <Chat account={this.state.account}/>
         </div>
     );

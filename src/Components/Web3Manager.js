@@ -1,4 +1,4 @@
-export default class Web3Manager {
+export class Web3Manager {
 
     static async connectWeb3(){
         if (window.ethereum) { 
@@ -14,4 +14,15 @@ export default class Web3Manager {
         }
     }
 
+    static async getNFTsfromSubgraph() {
+
+    }
+    
+    static async getNFTPlayer() {
+
+    }
+
+    static async getTokenBalance () {
+
+    }
 }
