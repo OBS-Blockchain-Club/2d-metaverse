@@ -1,6 +1,7 @@
 :root {
     --pixel-size: 2px;
     --grid-cell: calc( var(--pixel-size) * 16);
+    --width: calc(150 * var(--grid-cell));
 }
 
 .pixel-art {

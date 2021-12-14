@@ -51,12 +51,38 @@ class Game extends Component{
    }
   }
 
+  borderrestriction(){
+    this.map = document.querySelector(".map");
+    if (this.state.x < this.map.style.minWidth){
+      console.log("player has attempted to go past the border")
+      this.setState({x: 0})
+      document.removeEventListener("keydown", (e) => {
+        var dir = this.keys[e.which];
+        if (dir && this.current_directions.indexOf(dir) === -1) {
+          this.current_directions.unshift(dir)
+        }
+      })
+    } else if (this.state.x < this.map.style.maxWidth){
+      console.log("player has attempted to go past the border")
+      this.setState({x: 0})
+      document.removeEventListener("keydown", (e) => {
+        var dir = this.keys[e.which];
+        if (dir && this.current_directions.indexOf(dir) === -1) {
+          this.current_directions.unshift(dir)
+        }
+      })
+    }
+  }
+
+
   async componentDidMount () {
     this.setState({ account: await Web3Manager.connectWeb3() }, () => {
       WebsocketManager.verify(this.state.account)
     })
+    this.connectWeb3()
     this.character = document.querySelector(".character");
     this.map = document.querySelector(".map");
+    console.log(this.map.offsetHeight)
     this.gameLoop()
     document.addEventListener("keydown", (e) => {
       var dir = this.keys[e.which];
@@ -100,6 +126,22 @@ class Game extends Component{
     });
   }
 
+  
+  async connectWeb3(){
+    if (window.ethereum) { 
+      try { 
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' }); 
+        this.setState({ account: accounts[0]}, () => {
+          this.socket.emit('verify', this.state.account)
+        })
+        }catch (error) { 
+          if (error.code === 4001) 
+        { // User rejected request } 
+          console.log(error) } 
+        }
+    }
+  }
+  
   placeCharacter () {
     const held_direction = this.current_directions[0];
     if (held_direction) {
@@ -124,6 +166,7 @@ class Game extends Component{
       this.gameLoop()
       WebsocketManager.emitMovement(this.current_directions, this.state.account, this.state.x, this.state.y, this.character)
       this.renderOtherPlayers()
+      this.borderrestriction()
     })
   }
 
@@ -151,7 +194,7 @@ class Game extends Component{
     return (
         <div className="App">
             <div className="camera" style={{height: '100vh', width: '100vw'}}>
-                <div className="map pixel-art" id='map'>
+                <div className="map pixel-art  border-4 border-purple-500" id='map'>
                     <div id='otherPlayers'></div>
                     <div className="character" facing="down" walking="false">
                         <div className="shadow pixel-art"></div>
