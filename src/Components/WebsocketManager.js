@@ -1,12 +1,10 @@
 import socketClient from "socket.io-client";
+import Game from "../Pages/Game";
 
 export default class WebsocketManager {
-    constructor() {
-        super()
-        this.socket = socketClient('wss://pixel-art.kesarx.repl.co');
-    }
+    static socket = socketClient('wss://pixel-art.kesarx.repl.co');
     
-    sendMessage(message, address) {
+    static sendMessage(message, address) {
         this.socket.emit('message', {address, message})
     }
 
@@ -14,10 +12,10 @@ export default class WebsocketManager {
 
     }
     
-    emitMovement(directions, account, x, y, character) {
+    static emitMovement(directions, address, x, y, character) {
         if(directions.length !== 0) {
             this.socket.emit('move', {
-                account,
+                address,
                 x,
                 y,
                 facing: character.getAttribute("facing"),
@@ -26,6 +24,21 @@ export default class WebsocketManager {
         }
     }
 
-    getMonsters() {}
+    static verify (account) {
+        this.socket.emit('verify', account)
+    }
 
+    static getPlayers () {
+        this.socket.on('getPlayers', (msg) => {
+            console.log(msg)
+        })
+    }
+
+    static getMovement (account) {
+        this.socket.on('move', (msg) => {
+            if(account !== msg.address) {
+              Game.players[msg.address] = msg;
+            }
+          })
+    }
 }

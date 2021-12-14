@@ -7,8 +7,12 @@ import socketClient from "socket.io-client";
 import Utils from '../Components/service';
 import GameOptions from '../Components/GameOptions';
 import Web3Manager from '../Components/Web3Manager';
+import WebsocketManager from '../Components/WebsocketManager';
+import { Chat } from '../Components/Chat';
 
 class Game extends Component{
+
+  static players = [];
 
   constructor(){
     super()
@@ -18,7 +22,6 @@ class Game extends Component{
       speed: 1.5,
       shotCount: 0,
       account: null,
-      web3: new Web3(window.ethereum),
       pixelSize: parseInt(
         getComputedStyle(document.documentElement).getPropertyValue('--pixel-size')
       ),
@@ -31,11 +34,8 @@ class Game extends Component{
     this.socket = socketClient('wss://pixel-art.kesarx.repl.co');
     this.placeCharacter = this.placeCharacter.bind(this)
     this.gameLoop = this.gameLoop.bind(this)
-    this.sendMessage = this.sendMessage.bind(this)
     this.players = [];
-    this.chat = {};
     this.current_directions = [];
-    this.messages = [];
         
     this.directions = {
       up: "up",
@@ -52,7 +52,9 @@ class Game extends Component{
   }
 
   async componentDidMount () {
-    this.connectWeb3()
+    this.setState({ account: await Web3Manager.connectWeb3() }, () => {
+      WebsocketManager.verify(this.state.account)
+    })
     this.character = document.querySelector(".character");
     this.map = document.querySelector(".map");
     this.gameLoop()
@@ -69,15 +71,16 @@ class Game extends Component{
           this.players[msg.address] = msg
         })
     })
+    WebsocketManager.getMovement()
     this.socket.on('move', (msg) => {
       if(this.state.account !== msg.address) {
         this.players[msg.address] = msg
       }
     })
+
     this.socket.on('newPlayer', (msg) => {
       if(msg.address !== this.state.account) {
         console.log( msg.address + ' joined.')
-        console.log(msg)
         this.players[msg.address] = msg;
       }
     })
@@ -86,20 +89,6 @@ class Game extends Component{
         console.log( msg.address + ' left.')
         delete this.players[msg.address]
       }
-    })
-    this.socket.on('newMessage', (msg) => {
-      this.messages.push(msg)
-      const chat = (
-        <div>
-          {this.messages.map((msg, index) => (
-              <div key={index} id={index} className='text-left text-sm font-pixelated' style={{ overflow: 'y-scroll', maxHeight: '40%'}}>
-                <p className='inline-block'>{msg.address.substring(0, 7)}</p>
-                <p className='inline-block pl-2'>{msg.message}</p>
-              </div>
-          ))}
-        </div>
-      )
-      ReactDOM.render(chat, document.getElementById('chat'))
     })
    
     document.addEventListener("keyup", (e) => {
@@ -110,22 +99,6 @@ class Game extends Component{
       }
     });
   }
-  
-  async connectWeb3(){
-    if (window.ethereum) { 
-      try { 
-        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' }); 
-        this.setState({ account: accounts[0]}, () => {
-          this.socket.emit('verify', this.state.account)
-        })
-        }catch (error) { 
-          if (error.code === 4001) 
-        { // User rejected request 
-          console.log(error) } 
-        }
-    }
-  }
-  
 
   placeCharacter () {
     const held_direction = this.current_directions[0];
@@ -149,14 +122,13 @@ class Game extends Component{
     this.placeCharacter();
     window.requestAnimationFrame(() => {
       this.gameLoop()
-      this.emitMovement(this.current_directions)
+      WebsocketManager.emitMovement(this.current_directions, this.state.account, this.state.x, this.state.y, this.character)
       this.renderOtherPlayers()
-      // this.dealPlayerDamage()
     })
   }
 
   renderOtherPlayers() {
-
+    // console.log(this.players)
     const otherPlayers = (
       <div>
           {Object.keys(this.players).map((address, info) => (
@@ -168,27 +140,6 @@ class Game extends Component{
       </div>
     )
     ReactDOM.render(otherPlayers, document.getElementById('otherPlayers'))
-  }
-
-  emitMovement (directions) {
-    if(directions.length !== 0) {
-      const playerData = {
-        address: this.state.account,
-        x: this.state.x,
-        y: this.state.y,
-        facing: this.character.getAttribute("facing"),
-        walking: this.character.getAttribute("walking"),
-      }
-      this.socket.emit('move', playerData)
-    }
-  }
-
-  sendMessage(msg) {
-    const data = {
-      address: this.state.account,
-      message: msg
-    }
-    this.socket.emit('message', data)
   }
 
   render() {
@@ -218,14 +169,7 @@ class Game extends Component{
               <div className='font-pixelated inline-block text-black '>{shortenedAcc}</div>
               <br/><div className='inline-block text-black' id='coords'><div className='font-pixelated'><p className='px-10 inline-block'>X: {parseInt(this.state.x)}</p>  Y: {parseInt(-this.state.y)} </div></div>
             </div>
-            <div style={{position: 'absolute', bottom: 0, left: 0, fontSize: '1.4rem', padding: '5px 5px', opacity: 0.7, width: '15%'}}>
-              <div>
-                <div id='chat' className='bg-gray-200 bg-opacity-50 max-h-56'></div>
-                <div>
-                    <input id='input' autoComplete='off' placeholder='Type your message here...' className='w-full focus:outline-none font-pixelated' style={{backgroundColor: 'rgba(255, 255, 255, 0.6)', borderRadius: '0.2rem', padding: '0.4rem 0.2rem', fontSize: '1rem'}} onKeyDown={(e) => {if(e.key==='Enter'){this.sendMessage(e.target.value); document.getElementById('input').value = '' }}}/>
-                </div>
-              </div>
-            </div>
+            <Chat account={this.state.account}/>
         </div>
     );
   }
