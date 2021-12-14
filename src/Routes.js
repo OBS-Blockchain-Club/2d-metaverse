@@ -3,26 +3,26 @@ import { RedirectToHome } from "./Components/RedirectToHome";
 import Game from "./Pages/Game";
 import { Landing } from "./Pages/Landing";
 import Mint from "./Pages/Mint";
-import { Navbar } from "./Pages/Navbar";
+import { NavComponent } from "./Pages/Navbar";
 import { Whitepaper } from "./Pages/Whitepaper";
 
 export function Pages() {
     return(
             <Switch>
                 <Route exact path="/">
-                    <Navbar/>
+                    <NavComponent/>
                     <Landing/>
                 </Route>
                 <Route path="/mint">
-                    <Navbar/>
+                    <NavComponent/>
                     <Mint/>
                 </Route>
                 <Route exact path="/map">
-                    <Navbar/>
+                    <NavComponent/>
                     
                 </Route>
                 <Route path="/whitepaper">
-                    <Navbar/>
+                    <NavComponent/>
                     <Whitepaper/>
                 </Route>
                 <Route exact path="/game">
