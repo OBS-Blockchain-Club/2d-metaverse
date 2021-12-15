@@ -4,7 +4,8 @@ import './game.css';
 import ReactDOM from 'react-dom';
 import socketClient from "socket.io-client";
 import Utils from '../Components/service';
-import { Navbar, Nav } from 'react-bootstrap'
+import { Navbar, Nav, Col, Modal } from 'react-bootstrap'
+import Collapse from 'react-bootstrap/Collapse'
 import GameOptions from '../Components/GameOptions';
 import {
   Chat,
@@ -27,8 +28,12 @@ class Game extends Component{
       pixelSize: parseInt(
         getComputedStyle(document.documentElement).getPropertyValue('--pixel-size')
       ),
-      x: this.utils.randomIntFromInterval(600, 800),
-      y: this.utils.randomIntFromInterval(1400, 1700),
+      // x: this.utils.randomIntFromInterval(600, 800),
+      // y: this.utils.randomIntFromInterval(1400, 1700),
+      x: 0,
+      y: 0,
+      editopen: true,
+      showmodal: false
     }
 
     this.character = null;
@@ -53,19 +58,65 @@ class Game extends Component{
    }
   }
 
+
+  
+  createdivs(){
+    let html = ''
+    for(var x=0; x < 100; x++){
+        let htmlSegment = `<div class="absolute top-${x*10} mx-3 rounded hover:bg-blue-500">
+                          <div>
+                            Hover!!
+                          </div>
+                        </div>`;
+
+        html += htmlSegment;
+      }
+      let container = document.getElementById("rand");
+      container.innerHTML = html;
+  }
+
+  openmini(){
+    if (this.state.showmodal == false){
+      this.setState({showmodal: true})
+    } else {
+      this.setState({showmodal: false})
+    }
+  }
+
+  range(start, end) {
+    /* generate a range : [start, start+1, ..., end-1, end] */
+    var len = end - start + 1;
+    var a = new Array(len);
+    for (let i = 0; i < len; i++) a[i] = start + i;
+    return a;
+  }
+  
+  welcome(){
+    
+  }
+
   async componentDidMount () {
+    this.createdivs()
     this.setState({ account: await Web3Manager.connectWeb3() }, () => {
       WebsocketManager.verify(this.state.account)
     })
     this.character = document.querySelector(".character");
     this.map = document.querySelector(".map");
     this.gameLoop()
+
     document.addEventListener("keydown", (e) => {
       var dir = this.keys[e.which];
       if (dir && this.current_directions.indexOf(dir) === -1) {
         this.current_directions.unshift(dir)
       }
+      console.log(e)
+      if(e.key == 'Tab'){
+        this.openmini()
+      }
     })
+
+
+
     this.socket.on('getPlayers', (msg) => {
       console.log(msg)
         Object.keys(msg).map((address, info) => {
@@ -141,6 +192,13 @@ class Game extends Component{
       this.gameLoop()
       WebsocketManager.emitMovement(this.current_directions, this.state.account, this.state.x, this.state.y, this.character)
       this.renderOtherPlayers()
+      if(this.state.x <= 10 && this.state.y <= 10){
+        document.getElementById("playeralert").className="absolute text-white visible"
+        console.log("palyer in area")
+      } else {
+        document.getElementById("playeralert").className="absolute text-white invisible"
+      }
+
     })
   }
 
@@ -163,6 +221,8 @@ class Game extends Component{
         <div className="App oveflow-hidden">
             <div className="camera" style={{height: '100vh', width: '100vw'}}>
                 <div className="map pixel-art  border-4 border-purple-500" id='map'>
+                <div id="rand" className='absolute'></div>
+                <div className='absolute text-white invisible' id="playeralert">hey</div>
                     <div id='otherPlayers'></div>
                     <div className="character" facing="down" walking="false">
                         <div className="shadow pixel-art"></div>
@@ -170,12 +230,15 @@ class Game extends Component{
                     </div>
                 </div>
             </div>
-            <Minimap 
-              x={this.state.x}
-              y={this.state.y}
-              account={this.state.account}
-            />
+              <Minimap
+                x={this.state.x}
+                y={this.state.y}
+                account={this.state.account}
+              />
             <Chat account={this.state.account}/>
+            <Modal show={this.state.showmodal}>
+              Minimap still to be made to fit modal    
+            </Modal>
         </div>
     );
   }
