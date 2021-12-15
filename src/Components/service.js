@@ -29,4 +29,5 @@ export default class Utils {
           }
     }
     
+    delay = ms => new Promise(res => setTimeout(res, ms))
 }

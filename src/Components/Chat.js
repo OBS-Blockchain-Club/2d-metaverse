@@ -1,7 +1,6 @@
-import { WebsocketManager } from "./index";
+import { WebsocketManager, GameOptions } from "./index";
 import ReactDOM from 'react-dom';
 import { Component } from "react";
-import GameOptions from "./GameOptions";
 
 export class Chat extends Component {
 
