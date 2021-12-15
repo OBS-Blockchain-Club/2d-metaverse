@@ -23,14 +23,12 @@ class Game extends Component{
     
     this.utils = new Utils();
     this.state={
-      shotCount: 0,
       account: null,
       pixelSize: parseInt(
         getComputedStyle(document.documentElement).getPropertyValue('--pixel-size')
       ),
       x: this.utils.randomIntFromInterval(600, 800),
       y: this.utils.randomIntFromInterval(1400, 1700),
-      editopen: true
     }
 
     this.character = null;
@@ -55,46 +53,12 @@ class Game extends Component{
    }
   }
 
-  
-  editacc(){
-    console.log("hi")
-    this.setState({editopen: false})
-    console.log(this.state.editopen)
-
-  }    
-
-  borderrestriction(){
-    this.map = document.querySelector(".map");
-    if (this.state.x < this.map.style.minWidth){
-      console.log("player has attempted to go past the border")
-      this.setState({x: 0})
-      document.removeEventListener("keydown", (e) => {
-        var dir = this.keys[e.which];
-        if (dir && this.current_directions.indexOf(dir) === -1) {
-          this.current_directions.unshift(dir)
-        }
-      })
-    } else if (this.state.x < this.map.style.maxWidth){
-      console.log("player has attempted to go past the border")
-      this.setState({x: 0})
-      document.removeEventListener("keydown", (e) => {
-        var dir = this.keys[e.which];
-        if (dir && this.current_directions.indexOf(dir) === -1) {
-          this.current_directions.unshift(dir)
-        }
-      })
-    }
-  }
-
-
   async componentDidMount () {
     this.setState({ account: await Web3Manager.connectWeb3() }, () => {
       WebsocketManager.verify(this.state.account)
     })
-    this.connectWeb3()
     this.character = document.querySelector(".character");
     this.map = document.querySelector(".map");
-    console.log(this.map.offsetHeight)
     this.gameLoop()
     document.addEventListener("keydown", (e) => {
       var dir = this.keys[e.which];
@@ -177,7 +141,6 @@ class Game extends Component{
       this.gameLoop()
       WebsocketManager.emitMovement(this.current_directions, this.state.account, this.state.x, this.state.y, this.character)
       this.renderOtherPlayers()
-      this.borderrestriction()
     })
   }
 
