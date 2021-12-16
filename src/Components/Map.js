@@ -2,7 +2,7 @@ import { Component } from "react";
 import { Modal } from "react-bootstrap";
 import { GameOptions } from ".";
 
-export class Map extends Component {
+export class PopupMap extends Component {
     constructor(props) {
         super(props)
         this.state = {

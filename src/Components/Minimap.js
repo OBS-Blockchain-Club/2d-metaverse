@@ -1,7 +1,7 @@
 import { Component } from "react";
 import { 
     GameOptions, 
-    Map 
+    PopupMap 
 } from "./index"
 
 export class Minimap extends Component {
@@ -25,7 +25,7 @@ export class Minimap extends Component {
                                 <img className='relative' src='miniplayer.png' width='3' style={{top: miniY, left: miniX, filter: 'invert(100%)'}} />
                             </div>
                         </div>
-                        <Map x={this.props.x} y={this.props.y} />
+                        <PopupMap x={this.props.x} y={this.props.y} />
                     </div>
                     : null
                 }

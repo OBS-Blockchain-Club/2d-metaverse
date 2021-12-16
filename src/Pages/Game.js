@@ -4,12 +4,9 @@ import './game.css';
 import Utils from '../Components/service';
 import {
   Chat,
-  Minimap,
   Web3Manager,
   BaseGame,
   WebsocketManager,
-  GameOptions,
-  Map,
   Alert,
 } from '../Components/index';
 

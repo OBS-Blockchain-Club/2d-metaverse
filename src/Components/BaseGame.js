@@ -2,14 +2,13 @@
 import { Component } from 'react';
 import '../Pages/game.css';
 import ReactDOM from 'react-dom';
-import Utils from '../Components/service';
+import Utils from './service';
 import {
   WebsocketManager,
   Web3Manager,
   Minimap,
   GameOptions,
-  Map
-} from '../Components/index';
+} from './index';
 
 export class BaseGame extends Component{
 
@@ -95,7 +94,7 @@ export class BaseGame extends Component{
 
     WebsocketManager.socket.on('newPlayer', (msg) => {
       if(msg.address !== this.state.account) {
-        console.log( msg.address + ' joined.')
+        console.log(msg.address + ' joined.')
         this.players[msg.address] = msg;
       }
     })

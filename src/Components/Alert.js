@@ -9,7 +9,7 @@ export class Alert {
     static text;
 
     constructor(text, container) {
-        this.enabled = 'show';
+        this.enabled = 'visible';
         this.text = text;
         this.alert = (
             <div className='flex justify-center items-center'>
