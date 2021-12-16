@@ -12,10 +12,13 @@ export class Item extends Component {
             this.itemClass = 'item'
             this.dragElement(document.getElementById("item"));
         }
+        this.dragElement = this.dragElement.bind(this);
     }
 
     dragElement(elmnt) {
         var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+        var width = this.props.scale[0]
+        var height = this.props.scale[1] 
         if (document.getElementById(elmnt.id + "header")) {
           // if present, the header is where you move the DIV from:
           document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
@@ -44,8 +47,21 @@ export class Item extends Component {
           pos3 = e.clientX;
           pos4 = e.clientY;
           // set the element's new position:
-          elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
-          elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+          var newX = (elmnt.offsetLeft - pos1);
+          if((elmnt.offsetLeft - pos1) > 380) {
+              newX = 380;
+          } else if((elmnt.offsetLeft - pos1) < 0) {
+              newX = 0;
+          }
+
+          var newY = (elmnt.offsetTop - pos2);
+          if((elmnt.offsetTop - pos2) > 380) {
+              newY = 380;
+          } else if((elmnt.offsetTop - pos2) < 0) {
+              newY = 0;
+          }
+          elmnt.style.top = newY + "px";
+          elmnt.style.left = newX + "px";
         }
       
         function closeDragElement() {
@@ -64,7 +80,7 @@ export class Item extends Component {
                     width: this.props.scale[0],
                     height: this.props.scale[1],
                     maxWidth: 200, 
-                    maxHeight: 200, 
+                    maxHeight: 200,
                 }} />
             </div>
         )

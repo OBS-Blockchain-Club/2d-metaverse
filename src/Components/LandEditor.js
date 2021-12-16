@@ -1,6 +1,5 @@
 import { Component } from 'react';
 import '../Pages/game.css';
-import ReactDOM from 'react-dom';
 import {
   WebsocketManager,
   Web3Manager,
@@ -133,36 +132,14 @@ export class BaseGame extends Component{
     this.placeCharacter();
     window.requestAnimationFrame(() => {
       this.gameLoop()
-      if(GameOptions.multiplayer == true) {
-        this.renderOtherPlayers()
-        WebsocketManager.emitMovement(this.current_directions, this.state.account, this.state.x, this.state.y, this.character)
-      }
     })
-  }
-
-  renderOtherPlayers() {
-    const otherPlayers = (
-      <div>
-          {Object.keys(this.players).map((address, info) => (
-            <div key={address} id={address} className="character" facing={this.players[address].facing} walking={this.players[address].walking} style={{transform: `translate3d( ${this.players[address].x * this.state.pixelSize}px, ${this.players[address].y * this.state.pixelSize}px, 0)`}}>
-              <div className="shadow pixel-art"></div>
-              <div className="character_spritesheet pixel-art"></div>
-            </div>
-          ))}
-      </div>
-    )
-    ReactDOM.render(otherPlayers, document.getElementById('otherPlayers'))
   }
 
   render() {
     return (
         <div className="App overflow-hidden">
             <div className="camera" style={{height: '100vh', width: '100vw'}}>
-                <div className="map pixel-art  border-4 border-purple-500" id='map'>
-                    { GameOptions.multiplayer ? 
-                        <div id='otherPlayers'></div>
-                        : null
-                    }
+                <div className="map pixel-art" id='map'>
                     <Item src={GameOptions.landUrl} draggable={true} coords={[100, 200]} scale={[100, 100]}/>
                     <div className="character" facing="down" walking="false">
                         <div className="shadow pixel-art"></div>
