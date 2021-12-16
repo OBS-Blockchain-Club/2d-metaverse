@@ -1,13 +1,13 @@
 
 import { Component } from 'react';
 import './game.css';
-import Utils from '../Components/service';
 import {
   Chat,
   Web3Manager,
   BaseGame,
   WebsocketManager,
   Alert,
+  Utils
 } from '../Components/index';
 
 class Game extends Component{

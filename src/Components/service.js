@@ -1,4 +1,4 @@
-export default class Utils {
+export class Utils {
 
     calcSpeed(prev, next) {
     

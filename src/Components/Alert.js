@@ -1,7 +1,6 @@
 import ReactDOM from 'react-dom';
 import '../Pages/game.css';
 
-
 export class Alert {
     static alert;
     static container;
