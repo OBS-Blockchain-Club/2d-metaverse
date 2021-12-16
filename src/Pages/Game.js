@@ -46,6 +46,7 @@ class Game extends Component{
     this.setState({ account: await Web3Manager.connectWeb3() }, () => {
       WebsocketManager.verify(this.state.account)
     })
+    await this.utils.delay(2000)
     const alert = new Alert(`Hey ${this.state.account}!`, document.getElementById('alert'))
     await this.utils.delay(3000)
     alert.changeText('hello')

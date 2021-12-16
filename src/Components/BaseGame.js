@@ -1,4 +1,3 @@
-
 import { Component } from 'react';
 import '../Pages/game.css';
 import ReactDOM from 'react-dom';
