@@ -7,6 +7,7 @@ import {
   GameOptions,
   Utils,
   Item,
+  Backpack
 } from './index';
 
 export class LandEditor extends Component{
@@ -115,6 +116,7 @@ export class LandEditor extends Component{
                 y={this.state.y}
                 account={this.state.account}
             />
+            <Backpack/>
         </div>
     );
   }
