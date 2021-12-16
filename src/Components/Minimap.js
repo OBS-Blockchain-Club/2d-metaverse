@@ -1,4 +1,5 @@
 import { Component } from "react";
+import { Settings } from './Settings';
 import { 
     GameOptions, 
     PopupMap 
@@ -36,7 +37,7 @@ export class Minimap extends Component {
                             <div className='font-pixelated inline-block text-black '>{shortenedAcc}</div>
                             <br/>
                             <div className='inline-block text-black' id='coords'>
-                                <div className='font-pixelated'><p className='px-10 inline-block'>X: {parseInt(this.props.x)}</p>  Y: {parseInt(-this.props.y)}</div>
+                                <div className='font-pixelated'><p className='px-10 inline-block'><Settings/> X: {parseInt(this.props.x)}</p>  Y: {parseInt(-this.props.y)}</div>
                             </div>
                         </div>
                     </div>

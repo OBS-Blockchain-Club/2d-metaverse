@@ -7,7 +7,7 @@ import {
   BaseGame,
   WebsocketManager,
   Alert,
-  Utils
+  Utils,
 } from '../Components/index';
 
 class Game extends Component{
