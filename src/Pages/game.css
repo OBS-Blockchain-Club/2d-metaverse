@@ -17,10 +17,10 @@
 
 .map {
     image-rendering: pixelated;
-    background-image: url("https://i.imgur.com/a993R8f.png");
+    background-image: url("https://bafybeid5mwlza7c3ny7hgh2mxk3nem4nwczk2jtb67qn2vtdarnetnr7xe.ipfs.infura-ipfs.io/");
     background-size: 100%;
-    width: calc(150 * var(--grid-cell));
-    height: calc(150 * var(--grid-cell));
+    width: calc(15 * var(--grid-cell));
+    height: calc(15 * var(--grid-cell));
     position: relative;
 }
 

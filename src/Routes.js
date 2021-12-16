@@ -1,5 +1,6 @@
 import { Switch, Route } from "react-router-dom";
 import { RedirectToHome } from "./Components/RedirectToHome";
+import { Editor } from "./Pages/Editor";
 import Game from "./Pages/Game";
 import { Landing } from "./Pages/Landing";
 import Mint from "./Pages/Mint";
@@ -27,6 +28,9 @@ export function Pages() {
                 </Route>
                 <Route exact path="/game">
                     <Game/>
+                </Route>
+                <Route exact path="/editor">
+                    <Editor/>
                 </Route>
                 <Route component={RedirectToHome} />
             </Switch>
