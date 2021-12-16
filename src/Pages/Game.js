@@ -9,7 +9,8 @@ import {
   BaseGame,
   WebsocketManager,
   GameOptions,
-  Map
+  Map,
+  Alert,
 } from '../Components/index';
 
 class Game extends Component{
@@ -41,22 +42,18 @@ class Game extends Component{
       // let container = document.getElementById("rand");
       // container.innerHTML = html;
   }
-  
-  async welcome(){
-    this.setState({welcshow: 'visible', welctext:'Hi welcome to Pixel NFT!'})
-    await this.utils.delay(3000)
-    this.setState({welcshow: 'visible', welctext:'Remember to always be friendly and have fun!'})
-    await this.utils.delay(3000)
-    this.setState({welcshow: 'invisible'})
-  }
+
 
   async componentDidMount () {
-    this.welcome()
     this.createdivs()
     this.setState({ account: await Web3Manager.connectWeb3() }, () => {
       WebsocketManager.verify(this.state.account)
     })
-
+    const alert = new Alert(`Hey ${this.state.account}!`, document.getElementById('alert'))
+    await this.utils.delay(3000)
+    alert.changeText('hello')
+    await this.utils.delay(3000)
+    alert.enableAlert('hide');
   }
 
       // if( this.state.x <= 10 && this.state.y <= 10){
@@ -71,9 +68,7 @@ class Game extends Component{
       <div className="App oveflow-hidden">
         <BaseGame/>
         <Chat account={this.state.account}/>
-        <div className='flex justify-center items-center'>
-          <div className={` absolute top-0 bg-gray-200 bg-opacity-50 rounded-md px-4 font-pixelated pt-2 py-2 text-black mt-6 text-xl ${this.state.welcshow}`}>{this.state.welctext}</div>
-        </div>
+        <div id='alert'></div>
       </div>
     );
   }
