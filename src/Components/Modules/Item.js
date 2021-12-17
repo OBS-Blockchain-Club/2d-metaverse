@@ -10,12 +10,18 @@ export class Item extends Component {
     componentDidMount () {
         if(this.props.draggable) {
             this.itemClass = 'item'
-            this.dragElement(document.getElementById("item"));
+            this.dragElement(document.getElementById(this.props.id));
         }
         this.dragElement = this.dragElement.bind(this);
     }
 
     dragElement(elmnt) {
+
+        elmnt.addEventListener('contextmenu', e => {
+            e.preventDefault();
+            console.log('hello')
+        })
+
         var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
         var width = this.props.scale[0]
         var height = this.props.scale[1] 
@@ -74,7 +80,7 @@ export class Item extends Component {
     render() {
         return (
             <div>
-                <img id='item' src={this.props.metadata.image} className={`absolute ${this.itemClass}`} style={{
+                <img id={this.props.id} src={this.props.metadata.image} className={`absolute ${this.itemClass}`} style={{
                     left: this.props.coords[0], 
                     top: this.props.coords[1],
                     width: this.props.scale[0],

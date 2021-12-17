@@ -35,6 +35,11 @@ export class Backpack extends Component {
         })
     }
 
+    removeNFTFromBackpack(index) {
+        this.props.insertNFTFromBackpack(this.parsedNFTs[index])
+        this.parsedNFTs.splice(index, 1)
+    }
+
     async showbackpack(){
         if(this.state.display == 'none'){
             this.setState({display:"block", whenbackon: 'backa', animation: 'backpa'})
@@ -54,7 +59,7 @@ export class Backpack extends Component {
                     </svg>
                 </div>
                 <div className={`absolute bottom-0 bg-opacity-90 overflow-x-scroll overflow-y-hidden bg-gray-200 p-2 ${this.state.animation}`} style={{display:`${this.state.display}`, maxWidth: '60%'}}>
-                        { this.displayNFTs.length > 0 ?
+                        { this.parsedNFTs.length > 0 ?
                             <div className="inline-flex max-h-full">
                                 {Object.keys(this.parsedNFTs).map((index) => (
                                     <div key={index} className='inline-block p-1' style={{ width: '100px', maxWidth: '100px', height: "200px", maxHeight: "200px"}}>
@@ -62,7 +67,7 @@ export class Backpack extends Component {
                                             {this.parsedNFTs[index].name.substring(0, 5) + " ... " + this.parsedNFTs[index].name.substring(this.parsedNFTs[index].name.length-5, this.parsedNFTs[index].name.length)}
                                             <img src={this.parsedNFTs[index].image} />
                                             <div className="font-pixelated py-1">
-                                                <button className="px-2 rounded-sm bg-blue-400" onClick={() => {this.props.insertNFTFromBackpack(this.parsedNFTs[index])}}>Insert</button>
+                                                <button className="px-2 rounded-sm bg-blue-400" onClick={() => {this.removeNFTFromBackpack(index)}}>Insert</button>
                                             </div>
                                         </div>
                                     </div>

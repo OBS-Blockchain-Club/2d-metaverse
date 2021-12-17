@@ -2,9 +2,7 @@ import { Component } from 'react';
 import ReactDOM from 'react-dom';
 import '../Pages/game.css';
 import {
-  WebsocketManager,
   Web3Manager,
-  Minimap,
   GameOptions,
   Utils,
   Item,
@@ -93,22 +91,23 @@ export class LandEditor extends Component{
   }
 
   insertNewNFT (metadata) {
-    this.insertedNFTs.push(metadata)
-    const nfts = (
-      <div>
-        {this.insertedNFTs.map((metadata) => (
-          <Item draggable={true} metadata={metadata} coords={[100, 200]} scale={[100, 100]} />                  
-        ))}
-      </div>
-    )
-    ReactDOM.render(nfts, document.getElementById("nfts"))
+    if(this.insertedNFTs.length < 5) {
+      this.insertedNFTs.push(metadata)
+      const nfts = (
+        <div>
+          {this.insertedNFTs.map((metadata, index) => (
+            <Item key={index} draggable={true} metadata={metadata} coords={[100, 200]} id={"nft#" + index} scale={[100, 100]} />                  
+          ))}
+        </div>
+      )
+      ReactDOM.render(nfts, document.getElementById("nfts"))
+    }
   }
  
   gameLoop() {
     this.placeCharacter();
     window.requestAnimationFrame(() => {
       this.gameLoop()
-      // console.log(this.insertedNFTs)
     })
   }
 
@@ -117,7 +116,6 @@ export class LandEditor extends Component{
         <div className="App overflow-hidden">
             <div className="camera" style={{height: '100vh', width: '100vw'}}>
                 <div className="map pixel-art" id='map'>
-                    {/* <Item src={GameOptions.landUrl} draggable={true} coords={[100, 200]} scale={[100, 100]}/> */}
                     <div id='nfts'></div>
                     <div className="character" facing="down" walking="false">
                         <div className="shadow pixel-art"></div>

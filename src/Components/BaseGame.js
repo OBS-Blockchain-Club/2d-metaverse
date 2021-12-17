@@ -164,7 +164,6 @@ export class BaseGame extends Component{
                         <div id='otherPlayers'></div>
                         : null
                     }
-                    <Item src={GameOptions.landUrl} draggable={true} coords={[100, 200]} scale={[100, 100]}/>
                     <div className="character" facing="down" walking="false">
                         <div className="shadow pixel-art"></div>
                         <div className="character_spritesheet pixel-art"></div>
