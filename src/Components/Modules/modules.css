@@ -6,7 +6,38 @@
     filter: brightness(150%);
 }
 
+.backpa {
+    width: 800px;
+    animation: backpackopen 0.25s linear 0s 1 normal forwards;
+}
+
+.backa {
+    animation: backon 0.25s linear 0s 1 normal forwards;
+}
+
+.backpo {
+    width: 800px;
+    animation: backpackclose 0.25s linear 0s 1 normal forwards;
+}
+
+.backo {
+    animation: backoff 0.25s linear 0s 1 normal forwards;
+}
+
 @keyframes backpackopen{
     0% {height: 0px;}
-    100%{height: 400px;}
+    100%{height: 150px;}
+}
+@keyframes backon {
+    0% {margin-bottom: 0px;}
+    100% {margin-bottom: 150px;}
+}
+
+@keyframes backpackclose{
+    0% {height: 150px;}
+    100%{height: 0px;}
+}
+@keyframes backoff {
+    0% {margin-bottom: 150px;}
+    100% {margin-bottom: 0px;}
 }
