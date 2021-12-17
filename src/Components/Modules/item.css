@@ -1,7 +1,0 @@
-.item {
-    cursor: move;
-}
-
-.item:hover {
-    filter: brightness(150%);
-}

@@ -1,5 +1,5 @@
 import { Component } from "react";
-import './item.css'
+import './modules.css'
 
 export class Item extends Component {
     constructor(props) {

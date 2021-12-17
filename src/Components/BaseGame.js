@@ -8,6 +8,7 @@ import {
   GameOptions,
   Utils,
   Item,
+  Backpack
 } from './index';
 
 export class BaseGame extends Component{
@@ -175,6 +176,7 @@ export class BaseGame extends Component{
                 y={this.state.y}
                 account={this.state.account}
             />
+            <Backpack/>
         </div>
     );
   }

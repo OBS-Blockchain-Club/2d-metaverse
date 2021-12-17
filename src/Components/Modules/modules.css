@@ -1,0 +1,12 @@
+.item {
+    cursor: move;
+}
+
+.item:hover {
+    filter: brightness(150%);
+}
+
+@keyframes backpackopen{
+    0% {height: 0px;}
+    100%{height: 400px;}
+}
