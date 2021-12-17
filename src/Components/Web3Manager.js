@@ -17,7 +17,6 @@ export class Web3Manager {
     }
 
     static async getNFTsfromSubgraph(address) {
-      console.log(address)
       const request = `
         query {
           tokens (where: { owner: "${address}"}){
@@ -56,11 +55,11 @@ export class Web3Manager {
     }
 
     static async fetchNFTMetadata(tokenURI) {
-      const requestURL = tokenURI
+      var requestURL = tokenURI
       if(tokenURI.startsWith('ipfs://')) {
         requestURL = tokenURI.replace("ipfs://", 'https://gateway.ipfs.io/ipfs/')
       }
-      if(tokenURI.startsWith("https://")) {
+      if(requestURL.startsWith("https://")) {
         try {
           const response = await fetch(requestURL)
           const json = await response.json();
@@ -68,6 +67,8 @@ export class Web3Manager {
         } catch(e) {
           console.log(e)
         }
+      } else {
+        return null;
       }
     }
 }

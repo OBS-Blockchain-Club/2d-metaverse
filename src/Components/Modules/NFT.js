@@ -1,7 +1,7 @@
 import { Component } from "react";
 import './modules.css'
 
-export class Item extends Component {
+export class NFT extends Component {
     constructor(props) {
         super(props)
         this.itemClass = '';

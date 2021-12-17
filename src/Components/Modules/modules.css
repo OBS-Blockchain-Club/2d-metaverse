@@ -26,18 +26,18 @@
 
 @keyframes backpackopen{
     0% {height: 0px;}
-    100%{height: 150px;}
+    100%{height: 200px;}
 }
 @keyframes backon {
     0% {margin-bottom: 0px;}
-    100% {margin-bottom: 150px;}
+    100% {margin-bottom: 200px;}
 }
 
 @keyframes backpackclose{
-    0% {height: 150px;}
+    0% {height: 200px;}
     100%{height: 0px;}
 }
 @keyframes backoff {
-    0% {margin-bottom: 150px;}
+    0% {margin-bottom: 200px;}
     100% {margin-bottom: 0px;}
 }

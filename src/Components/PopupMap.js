@@ -27,8 +27,6 @@ export class PopupMap extends Component {
     }
 
     render() {
-        const miniX = (this.props.x/2380)*280;
-        const miniY = (this.props.y/2380)*280;
         return(
             <div>
                 <Modal show={this.state.showMiniMap} animation={false} centered size='lg'>
