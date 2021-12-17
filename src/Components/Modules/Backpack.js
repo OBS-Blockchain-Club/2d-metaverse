@@ -43,10 +43,12 @@ export class Backpack extends Component {
     render() {
         return(
             <div className="flex justify-center items-center">
-                <div className={`absolute bottom-0 w-40 h-7 bg-opacity-70 bg-gray-200 ${this.state.whenbackon}`} onClick={()=>{this.showbackpack()}} />
-                <div className={`absolute bottom-0  bg-opacity-70 bg-gray-200 ${this.state.animation}`} style={{display:`${this.state.display}`}}>
-                    <div id='nfts'></div>
+                <div className={`absolute bottom-0 w-40 h-7 bg-opacity-70 bg-gray-200 flex justify-center items-center ${this.state.whenbackon}`} onClick={()=>{this.showbackpack()}} >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clip-rule="evenodd" />
+                    </svg>
                 </div>
+                <div className={`absolute bottom-0  bg-opacity-70 bg-gray-200 ${this.state.animation}`} style={{display:`${this.state.display}`}}></div>
             </div>
         )
     }
