@@ -46,6 +46,11 @@ export class Editor extends Component{
     this.setState({ account: await Web3Manager.connectWeb3() }, () => {
       WebsocketManager.verify(this.state.account)
     })
+
+    const nfts = await Web3Manager.getNFTsfromSubgraph(this.state.account)
+    console.log(nfts.data.tokens)
+    const metadata = await Web3Manager.fetchNFTMetadata(nfts.data.tokens[0].tokenURI)
+    console.log(metadata)
   }
 
       // if( this.state.x <= 10 && this.state.y <= 10){
