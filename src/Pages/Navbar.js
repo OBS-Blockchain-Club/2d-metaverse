@@ -31,7 +31,8 @@ export class NavComponent extends Component {
     const tabs = {
       mint: navLinkCSS, 
       map: navLinkCSS, 
-      game: navLinkCSS, 
+      game: navLinkCSS,
+      editor: navLinkCSS,
       whitepaper: navLinkCSS,
     }
 

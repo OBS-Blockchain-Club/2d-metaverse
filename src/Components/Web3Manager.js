@@ -17,6 +17,7 @@ export class Web3Manager {
     }
 
     static async getNFTsfromSubgraph(address) {
+      console.log(address)
       const request = `
         query {
           tokens (where: { owner: "${address}"}){

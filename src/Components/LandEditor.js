@@ -49,11 +49,7 @@ export class LandEditor extends Component{
   }
 
   async componentDidMount () {
-    this.setState({ account: await Web3Manager.connectWeb3() }, () => {
-        if(GameOptions.multiplayer == true) {
-            WebsocketManager.verify(this.state.account)
-        }
-    })
+    this.setState({ account: await Web3Manager.connectWeb3() })
     this.character = document.querySelector(".character");
     this.map = document.querySelector(".map");
     this.gameLoop()
@@ -116,7 +112,7 @@ export class LandEditor extends Component{
                 y={this.state.y}
                 account={this.state.account}
             />
-            <Backpack/>
+            <Backpack account={this.state.account}/>
         </div>
     );
   }

@@ -176,7 +176,6 @@ export class BaseGame extends Component{
                 y={this.state.y}
                 account={this.state.account}
             />
-            <Backpack/>
         </div>
     );
   }
