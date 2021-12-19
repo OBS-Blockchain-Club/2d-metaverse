@@ -5,6 +5,9 @@ export class Item extends Component {
     constructor(props) {
         super(props)
         this.itemClass = '';
+        this.state = {
+            NFTPopup: false,
+        }
     }
 
     componentDidMount () {
@@ -19,7 +22,7 @@ export class Item extends Component {
 
         elmnt.addEventListener('contextmenu', e => {
             e.preventDefault();
-            console.log('hello')
+            this.props.enablePopup(this.props.metadata)
         })
 
         var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;

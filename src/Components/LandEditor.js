@@ -1,5 +1,4 @@
 import { Component } from 'react';
-import Offcanvas from 'react-bootstrap/Offcanvas'
 import ReactDOM from 'react-dom';
 import '../Pages/game.css';
 import {
@@ -8,8 +7,7 @@ import {
   Utils,
   Item,
   Backpack,
-  NFT,
-  NFTframe
+  NFTPopup
 } from './index';
 
 export class LandEditor extends Component{
@@ -28,12 +26,15 @@ export class LandEditor extends Component{
       ),
       x: 0,
       y: 0,
+      NFTPopup: false,
+      metadata: {}
     }
 
     this.character = null;
     this.map = null;
     this.placeCharacter = this.placeCharacter.bind(this)
     this.insertNewNFT = this.insertNewNFT.bind(this)
+    this.enableNFTPopup = this.enableNFTPopup.bind(this)
     this.gameLoop = this.gameLoop.bind(this)
     this.players = [];
     this.current_directions = [];
@@ -75,6 +76,14 @@ export class LandEditor extends Component{
     });
   }
 
+  enableNFTPopup(metadata) {
+    if(this.state.NFTPopup == true) {
+      this.setState({NFTPopup: false})
+    } else if(this.state.NFTPopup == false) {
+      this.setState({NFTPopup: true, metadata})
+    }
+  }
+
   placeCharacter () {
     const held_direction = this.current_directions[0];
     if (held_direction) {
@@ -99,7 +108,7 @@ export class LandEditor extends Component{
       const nfts = (
         <div>
           {this.insertedNFTs.map((metadata, index) => (
-            <Item key={index} draggable={true} metadata={metadata} coords={[100, 200]} id={"nft#" + index} scale={[100, 100]} />                  
+            <Item key={index} draggable={true} metadata={metadata} enablePopup={this.enableNFTPopup} coords={[100, 200]} id={"nft#" + index} scale={[100, 100]} />                  
           ))}
         </div>
       )
@@ -118,8 +127,8 @@ export class LandEditor extends Component{
     return (
         <div className="App overflow-hidden">
             <div className="camera" style={{height: '100vh', width: '100vw'}}>
-              <div onClick={()=> {window.location.href = '/game';}} className='text-red-500 cursor-pointer text-4xl absolute top-3 right-3 font-pixelated' >
-                X
+              <div onClick={()=> {window.location.href = '/game';}} className='text-red-500 cursor-pointer text-2xl absolute top-3 right-3 font-pixelated' >
+                Back To Game
               </div>
                 <div className="map pixel-art" id='map'>
                     <div id='nfts'></div>
@@ -138,7 +147,11 @@ export class LandEditor extends Component{
                 </div>
               </div>
              </div>
-             <NFTframe/>
+             {
+                    this.state.NFTPopup ?
+                    <NFTPopup metadata={this.props.metadata}/>
+                    : null
+              }
             <Backpack account={this.state.account} insertNFTFromBackpack={this.insertNewNFT}/>
         </div>
     );
