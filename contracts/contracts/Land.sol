@@ -8,12 +8,14 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract Houses is Ownable, ERC721 {
     using Counters for Counters.Counter;
     Counters.Counter public totalHouses;
+    
     uint256 maxHouses;
     string private _currentBaseURI;
 
     struct House {
         string code;
-        
+        uint256 xCoord;
+        uint256 yCoord;
     }
 
     constructor() ERC721("Houses", "Houses") {
@@ -40,6 +42,10 @@ contract Houses is Ownable, ERC721 {
     function _baseURI() internal view virtual override returns (string memory)
     {
         return _currentBaseURI;
+    }
+
+    function landCoords(uint) external view returns (uint256 x, uint256 y) {
+        
     }
 
 
