@@ -73,7 +73,7 @@ export class Backpack extends Component {
                                     </div>
                                 ))}
                             </div>
-                            : <div className="font-pixelated">No NFTs Available</div>
+                            : <div className="font-pixelated pt-24">You have no NFTs Available</div>
                         }
                 </div>
             </div>

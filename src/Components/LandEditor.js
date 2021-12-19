@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import Offcanvas from 'react-bootstrap/Offcanvas'
 import ReactDOM from 'react-dom';
 import '../Pages/game.css';
 import {
@@ -7,7 +8,8 @@ import {
   Utils,
   Item,
   Backpack,
-  NFT
+  NFT,
+  NFTframe
 } from './index';
 
 export class LandEditor extends Component{
@@ -19,6 +21,7 @@ export class LandEditor extends Component{
     
     this.utils = new Utils();
     this.state={
+      closeeditor : 'invisible',
       account: null,
       pixelSize: parseInt(
         getComputedStyle(document.documentElement).getPropertyValue('--pixel-size')
@@ -115,6 +118,9 @@ export class LandEditor extends Component{
     return (
         <div className="App overflow-hidden">
             <div className="camera" style={{height: '100vh', width: '100vw'}}>
+              <div onClick={()=> {window.location.href = '/game';}} className='text-red-500 cursor-pointer text-4xl absolute top-3 right-3 font-pixelated' >
+                X
+              </div>
                 <div className="map pixel-art" id='map'>
                     <div id='nfts'></div>
                     <div className="character" facing="down" walking="false">
@@ -132,6 +138,7 @@ export class LandEditor extends Component{
                 </div>
               </div>
              </div>
+             <NFTframe/>
             <Backpack account={this.state.account} insertNFTFromBackpack={this.insertNewNFT}/>
         </div>
     );
