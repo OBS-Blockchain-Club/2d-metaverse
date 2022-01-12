@@ -17,6 +17,7 @@ export default function Houses () {
     'https://cloudflare-ipfs.com/ipfs/Qmc3SHkH8jZRaJnJYELJnVHeU4SydiqG1sGUCgoXL5cLsb/9991.gif','https://cloudflare-ipfs.com/ipfs/Qmc3SHkH8jZRaJnJYELJnVHeU4SydiqG1sGUCgoXL5cLsb/9991.gif','https://cloudflare-ipfs.com/ipfs/Qmc3SHkH8jZRaJnJYELJnVHeU4SydiqG1sGUCgoXL5cLsb/9991.gif','https://cloudflare-ipfs.com/ipfs/Qmc3SHkH8jZRaJnJYELJnVHeU4SydiqG1sGUCgoXL5cLsb/9991.gif','https://cloudflare-ipfs.com/ipfs/Qmc3SHkH8jZRaJnJYELJnVHeU4SydiqG1sGUCgoXL5cLsb/9991.gif',
     'https://cloudflare-ipfs.com/ipfs/Qmc3SHkH8jZRaJnJYELJnVHeU4SydiqG1sGUCgoXL5cLsb/9991.gif','https://cloudflare-ipfs.com/ipfs/Qmc3SHkH8jZRaJnJYELJnVHeU4SydiqG1sGUCgoXL5cLsb/9991.gif','https://cloudflare-ipfs.com/ipfs/Qmc3SHkH8jZRaJnJYELJnVHeU4SydiqG1sGUCgoXL5cLsb/9991.gif','https://cloudflare-ipfs.com/ipfs/Qmc3SHkH8jZRaJnJYELJnVHeU4SydiqG1sGUCgoXL5cLsb/9991.gif','https://cloudflare-ipfs.com/ipfs/Qmc3SHkH8jZRaJnJYELJnVHeU4SydiqG1sGUCgoXL5cLsb/9991.gif',]
     
+
     useEffect(() => {
         var map = []
         var y = 0
@@ -27,15 +28,15 @@ export default function Houses () {
                 x += 400
 
                 if(i%10 === 0 ) {
-                    console.log(i%10)
                     x = 0;
                     y += 400;
                 }
             }
+            if(city[i].includes('Qmc3SHkH8jZRaJnJYELJnVHeU4SydiqG1sGUCgoXL5cLsb'))
+            console.log('house')
 
             const element = (
-                <div key={i}>
-                    <img src={city[i]} className={`absolute`} style={{
+                    <img key={i} src={city[i]} className={`absolute`} style={{
                         left: x, 
                         top: y,
                         width: 400,
@@ -43,7 +44,6 @@ export default function Houses () {
                         maxWidth: 400, 
                         maxHeight: 400,
                     }}/>
-                </div>
             )
     
             map.push(element)

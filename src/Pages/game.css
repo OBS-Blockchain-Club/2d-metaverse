@@ -32,12 +32,12 @@
     border: 0;
  }
 
- .shadow {
+ .thing {
     width: calc( var(--grid-cell)* 3 );
     height: calc( var(--grid-cell)* 3 );
     position: absolute;
     left:0;
-    top:0;
+    top:-20px;
     background: url("https://assets.codepen.io/21542/DemoRpgCharacterShadow.png") no-repeat no-repeat;
     background-size: 100%;
     border: 0;

@@ -90,6 +90,7 @@ export class BaseGame extends Component{
     WebsocketManager.getMovement()
     WebsocketManager.socket.on('move', (msg) => {
       if(this.state.account !== msg.address) {
+        console.log('move' + msg.address)
         this.players[msg.address] = msg
       }
     })
@@ -108,7 +109,9 @@ export class BaseGame extends Component{
     })
     WebsocketManager.socket.on('getPlayers', (msg) => {
         Object.keys(msg).map((address, info) => {
-          this.players[msg.address] = msg
+          if(address !== this.state.account) {
+            this.players[address] = msg
+          }
         })
     })
   }
@@ -116,10 +119,10 @@ export class BaseGame extends Component{
   placeCharacter () {
     const held_direction = this.current_directions[0];
     if (held_direction) {
-       if (held_direction === this.directions.right) {this.setState({x: this.state.x + GameOptions.speed});}
-       if (held_direction === this.directions.left) {this.setState({x: this.state.x - GameOptions.speed});}
-       if (held_direction === this.directions.down) {this.setState({y: this.state.y + GameOptions.speed});}
-       if (held_direction === this.directions.up) {this.setState({y: this.state.y - GameOptions.speed});;}
+       if (held_direction === this.directions.right && this.state.x < 1965) {this.setState({x: this.state.x + GameOptions.speed});}
+       if (held_direction === this.directions.left && this.state.x > -13) {this.setState({x: this.state.x - GameOptions.speed});}
+       if (held_direction === this.directions.down && this.state.y < 960) {this.setState({y: this.state.y + GameOptions.speed});}
+       if (held_direction === this.directions.up && this.state.y > -13) {this.setState({y: this.state.y - GameOptions.speed});;}
        this.character.setAttribute("facing", held_direction);
     }
     this.character.setAttribute("walking", held_direction ? "true" : "false");
@@ -167,7 +170,7 @@ export class BaseGame extends Component{
                         : null
                     }
                     <div className="character" facing="down" walking="false">
-                        <div className="shadow pixel-art"></div>
+                        <div className="thing pixel-art"></div>
                         <div className="character_spritesheet pixel-art"></div>
                     </div>
                 </div>
