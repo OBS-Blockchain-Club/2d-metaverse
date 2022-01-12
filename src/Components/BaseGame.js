@@ -10,6 +10,7 @@ import {
   Item,
   Backpack
 } from './index';
+import Houses from './Modules/Houses';
 
 export class BaseGame extends Component{
 
@@ -160,6 +161,7 @@ export class BaseGame extends Component{
         <div className="App overflow-hidden">
             <div className="camera" style={{height: '100vh', width: '100vw'}}>
                 <div className="map pixel-art" id='map'>
+                    <Houses/>
                     { GameOptions.multiplayer ? 
                         <div id='otherPlayers'></div>
                         : null

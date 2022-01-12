@@ -45,7 +45,7 @@
 
  .character_spritesheet {
     position: absolute;
-    background: url("https://bafkreidj5knsj2f6fhd36rzoizumweopocqk4ayyn3q7jw4d3nggwakdqu.ipfs.dweb.link/") no-repeat no-repeat;
+    background: url("https://bafkreidj5knsj2f6fhd36rzoizumweopocqk4ayyn3q7jw4d3nggwakdqu.ipfs.infura-ipfs.io/") no-repeat no-repeat;
     background-size: 100%;
     width: calc( var(--grid-cell)* 12 );
     height: calc( var(--grid-cell)* 12 );
